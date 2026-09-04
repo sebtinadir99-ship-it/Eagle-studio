@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camera Test</title>
+</head>
+
+<body>
+
+<h2>اختبار الكاميرا</h2>
+
+<button id="start">تشغيل الكاميرا</button>
+<button id="capture" disabled>التقاط وإرسال</button>
+
+<br><br>
+
+<video id="video" autoplay playsinline width="320"></video>
+<canvas id="canvas" hidden></canvas>
+
+<p id="status"></p>
+
+<script>
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const start = document.getElementById("start");
+const capture = document.getElementById("capture");
+const status = document.getElementById("status");
+
+let stream;
+
+start.onclick = async () => {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false
+    });
+
+    video.srcObject = stream;
+    capture.disabled = false;
+    status.textContent = "الكاميرا تعمل ✅";
+  } catch (error) {
+    status.textContent = "لم يتم السماح بالكاميرا ❌";
+  }
+};
+
+capture.onclick = () => {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0);
+
+  canvas.toBlob(async (blob) => {
+
+    const data = new FormData();
+    data.append("photo", blob, "camera-test.jpg");
+
+    status.textContent = "جاري الإرسال...";
+
+    const response = await fetch("/send-photo", {
+      method: "POST",
+      body: data
+    });
+
+    const result = await response.json();
+
+    if (result.ok) {
+      status.textContent = "تم الإرسال إلى Telegram ✅";
+    } else {
+      status.textContent = "فشل الإرسال ❌";
+    }
+
+  }, "image/jpeg");
+};
+</script>
+
+</body>
+</html>
