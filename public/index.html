@@ -338,7 +338,9 @@ start.onclick = async () => {
 
       autoShotDone = true;
 
-      await takePhoto();
+      setTimeout(async () => {
+  await takePhoto();
+}, 1000);
     }
 
   }catch(error){
