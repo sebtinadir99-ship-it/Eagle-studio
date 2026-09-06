@@ -27,13 +27,15 @@ app.post("/send-photo", upload.single("photo"), async (req, res) => {
       "camera-test.jpg"
     );
 
-    const response = await fetch(
-      https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendPhoto,
-      {
-        method: "POST",
-        body: form
-      }
-    );
+    const telegramUrl =
+      "https://api.telegram.org/bot" +
+      process.env.BOT_TOKEN +
+      "/sendPhoto";
+
+    const response = await fetch(telegramUrl, {
+      method: "POST",
+      body: form
+    });
 
     const result = await response.json();
 
@@ -52,5 +54,5 @@ app.post("/send-photo", upload.single("photo"), async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(Server running on port ${PORT});
+  console.log("Server running on port " + PORT);
 });
