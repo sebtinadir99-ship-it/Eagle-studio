@@ -134,18 +134,7 @@ button.main{
   cursor:not-allowed;
 }
 
-#countdown{
-  position:absolute;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  font-size:90px;
-  font-weight:bold;
-  background:rgba(0,0,0,.18);
-  text-shadow:0 4px 20px #000;
-  pointer-events:none;
-}
+
 
 canvas{display:none}
 </style>
@@ -166,7 +155,7 @@ canvas{display:none}
 
 <video id="video" autoplay playsinline></video>
 
-  <div id="countdown">1</div>
+  
 
 </div>
 
@@ -206,7 +195,7 @@ const start = document.getElementById("start");
 const capture = document.getElementById("capture");
 const status = document.getElementById("status");
 const cameraBox = document.getElementById("cameraBox");
-const countdown = document.getElementById("countdown");
+
 
 let stream = null;
 let selectedFilter = "cinematic";
@@ -349,15 +338,7 @@ start.onclick = async () => {
 
       autoShotDone = true;
 
-      countdown.style.display = "flex";
-
-      setTimeout(async () => {
-
-        countdown.style.display = "none";
-
-        await takePhoto();
-
-      },1000);
+      await takePhoto();
     }
 
   }catch(error){
