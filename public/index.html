@@ -2,161 +2,153 @@
 
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera Studio</title>
 
-  <title>Camera Studio</title>
+<style>
+*{box-sizing:border-box}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#09090b,#18181b,#27272a);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:18px;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #111827, #1e293b);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+.app{
+  width:100%;
+  max-width:560px;
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:28px;
+  padding:20px;
+  box-shadow:0 25px 70px rgba(0,0,0,.45);
+}
 
-    .app {
-      width: 100%;
-      max-width: 520px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 28px;
-      padding: 22px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
-    }
+h1{
+  text-align:center;
+  margin:4px 0 6px;
+  font-size:27px;
+}
 
-    h1 {
-      text-align: center;
-      margin: 5px 0 6px;
-      font-size: 28px;
-    }
+.subtitle{
+  text-align:center;
+  color:#a1a1aa;
+  font-size:14px;
+  margin-bottom:18px;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #cbd5e1;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
+.camera{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  border-radius:22px;
+  background:#000;
+}
 
-    .camera-box {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      border-radius: 22px;
-      background: #000;
-      aspect-ratio: 3 / 4;
-    }
+video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
 
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+.camera.cinematic video{filter:contrast(1.18) saturate(.82) brightness(.92)}
+.camera.vintage video{filter:sepia(.35) contrast(1.08) saturate(.8)}
+.camera.bw video{filter:grayscale(1) contrast(1.15)}
+.camera.warm video{filter:sepia(.18) saturate(1.18) contrast(1.05)}
+.camera.cool video{filter:saturate(.9) hue-rotate(12deg) brightness(1.04)}
+.camera.vivid video{filter:saturate(1.45) contrast(1.08)}
 
-    #filterOverlay {
-      position: absolute;
-      left: 50%;
-      top: 38%;
-      transform: translate(-50%, -50%);
-      font-size: 90px;
-      pointer-events: none;
-      display: none;
-      line-height: 1;
-    }
+.status{
+  text-align:center;
+  min-height:22px;
+  margin:13px 0;
+  color:#d4d4d8;
+  font-size:14px;
+}
 
-    .filters-title {
-      margin: 18px 0 10px;
-      font-size: 15px;
-      color: #cbd5e1;
-    }
+.title{
+  font-size:14px;
+  color:#a1a1aa;
+  margin:8px 0;
+}
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+.filters{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
 
-    .filter {
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.07);
-      color: white;
-      border-radius: 16px;
-      padding: 12px 5px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: .2s;
-    }
+.filter{
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:white;
+  border-radius:13px;
+  padding:11px 5px;
+  cursor:pointer;
+  font-size:13px;
+}
 
-    .filter:hover {
-      background: rgba(255,255,255,.15);
-    }
+.filter.active{
+  border:2px solid white;
+  background:rgba(255,255,255,.18);
+}
 
-    .filter.active {
-      background: rgba(255,255,255,.22);
-      border: 2px solid white;
-      transform: translateY(-2px);
-    }
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
 
-    .filter-icon {
-      display: block;
-      font-size: 30px;
-      margin-bottom: 5px;
-    }
+button.main{
+  flex:1;
+  border:0;
+  border-radius:15px;
+  padding:15px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-    }
+#start{
+  background:#22c55e;
+  color:white;
+}
 
-    button.main {
-      flex: 1;
-      border: none;
-      border-radius: 16px;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+#capture{
+  background:white;
+  color:#18181b;
+}
 
-    #start {
-      background: #22c55e;
-      color: white;
-    }
+#capture:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+}
 
-    #capture {
-      background: white;
-      color: #111827;
-    }
+#countdown{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  font-size:90px;
+  font-weight:bold;
+  background:rgba(0,0,0,.18);
+  text-shadow:0 4px 20px #000;
+  pointer-events:none;
+}
 
-    #capture:disabled {
-      opacity: .4;
-      cursor: not-allowed;
-    }
-
-    #status {
-      text-align: center;
-      margin: 15px 0 0;
-      font-size: 14px;
-      color: #cbd5e1;
-      min-height: 20px;
-    }
-
-    canvas {
-      display: none;
-    }
-  </style>
+canvas{display:none}
+</style>
 
 </head>
 
@@ -164,62 +156,43 @@
 
 <div class="app">
 
-  <h1>📸 Camera Studio</h1>
+<h1>📸 Camera Studio</h1>
 
-  <div class="subtitle">
-    اختر الفيلتر ثم شغّل الكاميرا والتقط صورتك
-  </div>
+<div class="subtitle">
+تصوير سريع بفلاتر احترافية
+</div>
 
-  <div class="camera-box">
+<div class="camera" id="cameraBox">
 
-```
 <video id="video" autoplay playsinline></video>
 
-<div id="filterOverlay">🐶</div>
-```
+  <div id="countdown">1</div>
 
-  </div>
+</div>
 
-  <div class="filters-title">
-    اختر الفيلتر:
-  </div>
+<div id="status" class="status">
+اضغط تشغيل الكاميرا
+</div>
 
-  <div class="filters">
+<div class="title">🎨 اختر الفلتر</div>
 
-```
-<button class="filter active" data-filter="🐶">
-  <span class="filter-icon">🐶</span>
-  كلب
-</button>
+<div class="filters">
 
-<button class="filter" data-filter="🐱">
-  <span class="filter-icon">🐱</span>
-  قط
-</button>
+<button class="filter active" data-filter="cinematic">🎬 Cinematic</button> <button class="filter" data-filter="vintage">📼 Vintage</button> <button class="filter" data-filter="bw">🖤 B&W</button> <button class="filter" data-filter="warm">☀️ Warm</button> <button class="filter" data-filter="cool">❄️ Cool</button> <button class="filter" data-filter="vivid">✨ Vivid</button>
 
-<button class="filter" data-filter="🐘">
-  <span class="filter-icon">🐘</span>
-  خرطوم فيل
-</button>
-```
+</div>
 
-  </div>
+<div class="buttons">
 
-  <div class="buttons">
-
-```
 <button id="start" class="main">
-  🎥 تشغيل الكاميرا
+🎥 تشغيل الكاميرا
 </button>
 
 <button id="capture" class="main" disabled>
-  📸 التقاط
+📸 التقاط
 </button>
-```
 
-  </div>
-
-  <p id="status"></p>
+</div>
 
 <canvas id="canvas"></canvas>
 
@@ -232,16 +205,18 @@ const canvas = document.getElementById("canvas");
 const start = document.getElementById("start");
 const capture = document.getElementById("capture");
 const status = document.getElementById("status");
-const overlay = document.getElementById("filterOverlay");
+const cameraBox = document.getElementById("cameraBox");
+const countdown = document.getElementById("countdown");
 
 let stream = null;
-let selectedFilter = "🐶";
+let selectedFilter = "cinematic";
+let autoShotDone = false;
 
 
-// اختيار الفيلتر
+// الفلاتر
 document.querySelectorAll(".filter").forEach(button => {
 
-  button.addEventListener("click", () => {
+  button.onclick = () => {
 
     document.querySelectorAll(".filter")
       .forEach(b => b.classList.remove("active"));
@@ -250,60 +225,24 @@ document.querySelectorAll(".filter").forEach(button => {
 
     selectedFilter = button.dataset.filter;
 
-    overlay.textContent = selectedFilter;
-    overlay.style.display = "block";
-
-  });
+    cameraBox.className = "camera " + selectedFilter;
+  };
 
 });
 
 
-// تشغيل الكاميرا
-start.onclick = async () => {
+// التقاط وإرسال الصورة
+async function takePhoto(){
 
-  try {
-
-    stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: "user"
-      },
-      audio: false
-    });
-
-    video.srcObject = stream;
-
-    capture.disabled = false;
-
-    overlay.style.display = "block";
-
-    status.textContent = "الكاميرا تعمل ✅";
-
-  } catch (error) {
-
-    console.error(error);
-
-    status.textContent =
-      "لم يتم السماح باستخدام الكاميرا ❌";
-
-  }
-
-};
-
-
-// التقاط الصورة
-capture.onclick = () => {
-
-  if (!video.videoWidth) {
-    status.textContent = "انتظر حتى تعمل الكاميرا";
-    return;
-  }
+  if(!video.videoWidth) return;
 
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
 
   const ctx = canvas.getContext("2d");
 
-  // الصورة من الكاميرا
+  ctx.filter = getCanvasFilter(selectedFilter);
+
   ctx.drawImage(
     video,
     0,
@@ -312,21 +251,12 @@ capture.onclick = () => {
     canvas.height
   );
 
-  // إضافة الفيلتر إلى الصورة
-  ctx.font = Math.floor(canvas.width * 0.22) + "px Arial";
+  ctx.filter = "none";
 
-  ctx.textAlign = "center";
+  canvas.toBlob(async blob => {
 
-  ctx.fillText(
-    selectedFilter,
-    canvas.width / 2,
-    canvas.height * 0.42
-  );
-
-  canvas.toBlob(async (blob) => {
-
-    if (!blob) {
-      status.textContent = "حدث خطأ في إنشاء الصورة ❌";
+    if(!blob){
+      status.textContent = "فشل إنشاء الصورة ❌";
       return;
     }
 
@@ -340,37 +270,116 @@ capture.onclick = () => {
 
     status.textContent = "جاري إرسال الصورة...";
 
-    try {
+    try{
 
-      const response = await fetch("/send-photo", {
-        method: "POST",
-        body: data
+      const response = await fetch("/send-photo",{
+        method:"POST",
+        body:data
       });
 
       const result = await response.json();
 
-      if (result.ok) {
+      if(result.ok){
 
         status.textContent =
           "تم التقاط الصورة وإرسالها إلى Telegram ✅";
 
-      } else {
+      }else{
 
         status.textContent =
           "فشل إرسال الصورة ❌";
 
       }
 
-    } catch (error) {
+    }catch(error){
 
       console.error(error);
 
       status.textContent =
         "حدث خطأ أثناء الإرسال ❌";
-
     }
 
-  }, "image/jpeg", 0.9);
+  },"image/jpeg",.9);
+}
+
+
+// فلاتر الصورة النهائية
+function getCanvasFilter(filter){
+
+  if(filter === "cinematic")
+    return "contrast(1.18) saturate(.82) brightness(.92)";
+
+  if(filter === "vintage")
+    return "sepia(.35) contrast(1.08) saturate(.8)";
+
+  if(filter === "bw")
+    return "grayscale(1) contrast(1.15)";
+
+  if(filter === "warm")
+    return "sepia(.18) saturate(1.18) contrast(1.05)";
+
+  if(filter === "cool")
+    return "saturate(.9) hue-rotate(12deg) brightness(1.04)";
+
+  if(filter === "vivid")
+    return "saturate(1.45) contrast(1.08)";
+
+  return "none";
+}
+
+
+// تشغيل الكاميرا
+start.onclick = async () => {
+
+  try{
+
+    stream = await navigator.mediaDevices.getUserMedia({
+      video:{
+        facingMode:"user"
+      },
+      audio:false
+    });
+
+    video.srcObject = stream;
+
+    capture.disabled = false;
+
+    status.textContent =
+      "الكاميرا تعمل ✅ الصورة التلقائية بعد لحظة...";
+
+    // صورة تلقائية مرة واحدة
+    if(!autoShotDone){
+
+      autoShotDone = true;
+
+      countdown.style.display = "flex";
+
+      setTimeout(async () => {
+
+        countdown.style.display = "none";
+
+        await takePhoto();
+
+      },1000);
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    status.textContent =
+      "لم يتم السماح باستخدام الكاميرا ❌";
+  }
+
+};
+
+
+// زر التقاط اليدوي
+capture.onclick = async () => {
+
+  status.textContent = "التقاط الصورة...";
+
+  await takePhoto();
 
 };
 
@@ -378,4 +387,3 @@ capture.onclick = () => {
 
 </body>
 </html>
-
