@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -116,7 +117,7 @@ body.dark .topbar{
 ========================= */
 
 .main{
-  width:min(1180px,94%);
+  width:min(1400px,96%);
   margin:30px auto 55px;
 }
 
@@ -141,16 +142,76 @@ body.dark .topbar{
 }
 
 /* =========================
-   CAMERA
+   CAMERA AREA
 ========================= */
 
 .camera-wrap{
-  display:flex;
+  display:grid;
+  grid-template-columns:minmax(90px,150px) minmax(0,900px) minmax(90px,150px);
+  align-items:center;
   justify-content:center;
+  gap:18px;
+  width:100%;
 }
 
+/* =========================
+   SIDE CHARACTER GALLERY
+========================= */
+
+.side-gallery{
+  width:150px;
+  height:500px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:18px;
+  flex-shrink:0;
+}
+
+.side-gallery.side-left{
+  align-items:flex-end;
+}
+
+.side-gallery.side-right{
+  align-items:flex-start;
+}
+
+.side-photo{
+  width:145px;
+  height:205px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#ddd;
+  background-size:cover;
+  background-position:center;
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.14),
+    0 3px 10px rgba(0,0,0,.06);
+  border:1px solid rgba(255,255,255,.7);
+  opacity:1;
+  transform:translateY(0) scale(1);
+  transition:
+    opacity .65s ease,
+    transform .65s ease;
+}
+
+.side-photo.small{
+  width:115px;
+  height:155px;
+  opacity:.82;
+}
+
+.side-photo.changing{
+  opacity:0;
+  transform:translateY(12px) scale(.96);
+}
+
+/* =========================
+   CAMERA
+========================= */
+
 .camera{
-  width:min(900px,100%);
+  width:100%;
   aspect-ratio:16/10;
   background:#080808;
   border-radius:24px;
@@ -682,6 +743,57 @@ video{
 }
 
 /* =========================
+   SIDE GALLERY RESPONSIVE
+========================= */
+
+@media(max-width:1150px){
+
+  .camera-wrap{
+    grid-template-columns:110px minmax(0,760px) 110px;
+    gap:10px;
+  }
+
+  .side-gallery{
+    width:110px;
+  }
+
+  .side-photo{
+    width:105px;
+    height:155px;
+  }
+
+  .side-photo.small{
+    width:82px;
+    height:120px;
+  }
+
+}
+
+@media(max-width:900px){
+
+  .camera-wrap{
+    grid-template-columns:90px minmax(0,1fr) 90px;
+    gap:7px;
+  }
+
+  .side-gallery{
+    width:90px;
+  }
+
+  .side-photo{
+    width:85px;
+    height:125px;
+    border-radius:14px;
+  }
+
+  .side-photo.small{
+    width:68px;
+    height:98px;
+  }
+
+}
+
+/* =========================
    MOBILE
 ========================= */
 
@@ -719,6 +831,17 @@ video{
 
   .hero h1{
     font-size:24px;
+  }
+
+  /* Hide side character images on small screens */
+
+  .side-gallery{
+    display:none;
+  }
+
+  .camera-wrap{
+    display:block;
+    width:100%;
   }
 
   .camera{
@@ -814,15 +937,40 @@ video{
 
   </div>
 
-  <!-- CAMERA -->
+
+  <!-- =========================
+       CAMERA + SIDE CHARACTERS
+  ========================= -->
 
   <div class="camera-wrap">
+
+    <!-- LEFT -->
+
+    <div class="side-gallery side-left">
+
+      <div
+        class="side-photo"
+        id="sidePhotoLeft">
+      </div>
+
+      <div
+        class="side-photo small"
+        id="sidePhotoLeft2">
+      </div>
+
+    </div>
+
+
+    <!-- CAMERA -->
 
     <div class="camera" id="cameraBox">
 
       <div class="camera-label">
+
         <span class="live-dot"></span>
+
         CAMERA
+
       </div>
 
       <video
@@ -834,9 +982,29 @@ video{
 
     </div>
 
+
+    <!-- RIGHT -->
+
+    <div class="side-gallery side-right">
+
+      <div
+        class="side-photo small"
+        id="sidePhotoRight2">
+      </div>
+
+      <div
+        class="side-photo"
+        id="sidePhotoRight">
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- CONTROLS -->
+
+  <!-- =========================
+       CONTROLS
+  ========================= -->
 
   <div class="controls">
 
@@ -860,7 +1028,10 @@ video{
     id="autoInfo">
   </div>
 
-  <!-- EFFECTS -->
+
+  <!-- =========================
+       EFFECTS
+  ========================= -->
 
   <section class="panel">
 
@@ -967,7 +1138,10 @@ video{
 
   </section>
 
-  <!-- SAVE -->
+
+  <!-- =========================
+       SAVE
+  ========================= -->
 
   <div class="save-area">
 
@@ -981,7 +1155,10 @@ video{
 
 </main>
 
-<!-- SETTINGS -->
+
+<!-- =========================
+     SETTINGS
+========================= -->
 
 <div
   class="overlay"
@@ -1006,6 +1183,7 @@ video{
 
   </div>
 
+
   <div class="setting-row">
 
     <div class="setting-label">
@@ -1020,13 +1198,22 @@ video{
       class="setting-select"
       id="quality">
 
-      <option value="0.92">High — 92%</option>
-      <option value="0.85">Balanced — 85%</option>
-      <option value="0.75">Standard — 75%</option>
+      <option value="0.92">
+        High — 92%
+      </option>
+
+      <option value="0.85">
+        Balanced — 85%
+      </option>
+
+      <option value="0.75">
+        Standard — 75%
+      </option>
 
     </select>
 
   </div>
+
 
   <div class="setting-row">
 
@@ -1042,13 +1229,22 @@ video{
       class="setting-select"
       id="photoCount">
 
-      <option value="10">10 photos</option>
-      <option value="5">5 photos</option>
-      <option value="3">3 photos</option>
+      <option value="10">
+        10 photos
+      </option>
+
+      <option value="5">
+        5 photos
+      </option>
+
+      <option value="3">
+        3 photos
+      </option>
 
     </select>
 
   </div>
+
 
   <div class="setting-row">
 
@@ -1064,9 +1260,17 @@ video{
       class="setting-select"
       id="photoInterval">
 
-      <option value="1000">1 second</option>
-      <option value="1500">1.5 seconds</option>
-      <option value="2000">2 seconds</option>
+      <option value="1000">
+        1 second
+      </option>
+
+      <option value="1500">
+        1.5 seconds
+      </option>
+
+      <option value="2000">
+        2 seconds
+      </option>
 
     </select>
 
@@ -1074,15 +1278,18 @@ video{
 
 </aside>
 
+
 <div
   class="toast"
   id="toast">
 </div>
 
+
 <canvas
   id="canvas"
   style="display:none">
 </canvas>
+
 
 <script>
 
@@ -1090,26 +1297,244 @@ video{
    ELEMENTS
 ========================= */
 
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
+const video =
+  document.getElementById("video");
 
-const start = document.getElementById("start");
-const capture = document.getElementById("capture");
-const save = document.getElementById("save");
+const canvas =
+  document.getElementById("canvas");
 
-const autoInfo = document.getElementById("autoInfo");
+const start =
+  document.getElementById("start");
 
-const themeBtn = document.getElementById("themeBtn");
-const settingsBtn = document.getElementById("settingsBtn");
-const settingsPanel = document.getElementById("settingsPanel");
-const closeSettings = document.getElementById("closeSettings");
-const overlay = document.getElementById("overlay");
+const capture =
+  document.getElementById("capture");
 
-const quality = document.getElementById("quality");
-const photoCount = document.getElementById("photoCount");
-const photoInterval = document.getElementById("photoInterval");
+const save =
+  document.getElementById("save");
 
-const toast = document.getElementById("toast");
+const autoInfo =
+  document.getElementById("autoInfo");
+
+const themeBtn =
+  document.getElementById("themeBtn");
+
+const settingsBtn =
+  document.getElementById("settingsBtn");
+
+const settingsPanel =
+  document.getElementById("settingsPanel");
+
+const closeSettings =
+  document.getElementById("closeSettings");
+
+const overlay =
+  document.getElementById("overlay");
+
+const quality =
+  document.getElementById("quality");
+
+const photoCount =
+  document.getElementById("photoCount");
+
+const photoInterval =
+  document.getElementById("photoInterval");
+
+const toast =
+  document.getElementById("toast");
+
+
+/* =========================
+   SIDE CHARACTER ELEMENTS
+========================= */
+
+const sidePhotoLeft =
+  document.getElementById("sidePhotoLeft");
+
+const sidePhotoLeft2 =
+  document.getElementById("sidePhotoLeft2");
+
+const sidePhotoRight =
+  document.getElementById("sidePhotoRight");
+
+const sidePhotoRight2 =
+  document.getElementById("sidePhotoRight2");
+
+
+/* =========================
+   CHARACTER IMAGES
+========================= */
+
+const characterImages = [
+
+  "https://i.pravatar.cc/500?img=12",
+
+  "https://i.pravatar.cc/500?img=32",
+
+  "https://i.pravatar.cc/500?img=47",
+
+  "https://i.pravatar.cc/500?img=5",
+
+  "https://i.pravatar.cc/500?img=11",
+
+  "https://i.pravatar.cc/500?img=13",
+
+  "https://i.pravatar.cc/500?img=14",
+
+  "https://i.pravatar.cc/500?img=21",
+
+  "https://i.pravatar.cc/500?img=25",
+
+  "https://i.pravatar.cc/500?img=33",
+
+  "https://i.pravatar.cc/500?img=44",
+
+  "https://i.pravatar.cc/500?img=51"
+
+];
+
+
+/* =========================
+   SHUFFLE CHARACTERS
+========================= */
+
+let characterPool = [...characterImages];
+
+let characterIndex = 0;
+
+
+function shuffleCharacters(){
+
+  for(
+    let i = characterPool.length - 1;
+    i > 0;
+    i--
+  ){
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      characterPool[i],
+      characterPool[j]
+    ] =
+    [
+      characterPool[j],
+      characterPool[i]
+    ];
+
+  }
+
+}
+
+
+function getNextCharacter(){
+
+  if(
+    characterIndex >=
+    characterPool.length
+  ){
+
+    shuffleCharacters();
+
+    characterIndex = 0;
+
+  }
+
+
+  const image =
+    characterPool[characterIndex];
+
+  characterIndex++;
+
+  return image;
+
+}
+
+
+/* =========================
+   CHANGE SIDE PHOTO
+========================= */
+
+function changeSidePhoto(element){
+
+  element.classList.add("changing");
+
+
+  setTimeout(() => {
+
+    element.style.backgroundImage =
+      `url("${getNextCharacter()}")`;
+
+    element.classList.remove("changing");
+
+  },650);
+
+}
+
+
+/* =========================
+   START CHARACTER SLIDER
+========================= */
+
+function startCharacterSlider(){
+
+  shuffleCharacters();
+
+
+  sidePhotoLeft.style.backgroundImage =
+    `url("${getNextCharacter()}")`;
+
+  sidePhotoLeft2.style.backgroundImage =
+    `url("${getNextCharacter()}")`;
+
+  sidePhotoRight.style.backgroundImage =
+    `url("${getNextCharacter()}")`;
+
+  sidePhotoRight2.style.backgroundImage =
+    `url("${getNextCharacter()}")`;
+
+
+  setInterval(() => {
+
+    changeSidePhoto(
+      sidePhotoLeft
+    );
+
+
+    setTimeout(() => {
+
+      changeSidePhoto(
+        sidePhotoRight
+      );
+
+    },700);
+
+
+    setTimeout(() => {
+
+      changeSidePhoto(
+        sidePhotoLeft2
+      );
+
+    },1400);
+
+
+    setTimeout(() => {
+
+      changeSidePhoto(
+        sidePhotoRight2
+      );
+
+    },2100);
+
+  },3500);
+
+}
+
+
+startCharacterSlider();
 
 
 /* =========================
@@ -1117,14 +1542,19 @@ const toast = document.getElementById("toast");
 ========================= */
 
 let stream = null;
+
 let selectedEffect = "normal";
+
 let lastBlob = null;
 
 let autoStarted = false;
+
 let sending = false;
 
 let imageQuality = .92;
+
 let automaticPhotoCount = 10;
+
 let automaticInterval = 1000;
 
 
@@ -1134,12 +1564,20 @@ let automaticInterval = 1000;
 
 function showToast(message){
 
-  toast.textContent = message;
+  toast.textContent =
+    message;
 
-  toast.classList.add("show");
+  toast.classList.add(
+    "show"
+  );
+
 
   setTimeout(() => {
-    toast.classList.remove("show");
+
+    toast.classList.remove(
+      "show"
+    );
+
   },2200);
 
 }
@@ -1149,18 +1587,31 @@ function showToast(message){
    SETTINGS
 ========================= */
 
-settingsBtn.addEventListener("click",() => {
+settingsBtn.addEventListener(
+  "click",
+  () => {
 
-  settingsPanel.classList.add("open");
-  overlay.classList.add("active");
+    settingsPanel.classList.add(
+      "open"
+    );
 
-});
+    overlay.classList.add(
+      "active"
+    );
+
+  }
+);
 
 
 function closeSettingsPanel(){
 
-  settingsPanel.classList.remove("open");
-  overlay.classList.remove("active");
+  settingsPanel.classList.remove(
+    "open"
+  );
+
+  overlay.classList.remove(
+    "active"
+  );
 
 }
 
@@ -1170,63 +1621,98 @@ closeSettings.addEventListener(
   closeSettingsPanel
 );
 
+
 overlay.addEventListener(
   "click",
   closeSettingsPanel
 );
 
 
-quality.addEventListener("change",() => {
+quality.addEventListener(
+  "change",
+  () => {
 
-  imageQuality = Number(quality.value);
+    imageQuality =
+      Number(
+        quality.value
+      );
 
-});
-
-
-photoCount.addEventListener("change",() => {
-
-  automaticPhotoCount = Number(photoCount.value);
-
-});
+  }
+);
 
 
-photoInterval.addEventListener("change",() => {
+photoCount.addEventListener(
+  "change",
+  () => {
 
-  automaticInterval = Number(photoInterval.value);
+    automaticPhotoCount =
+      Number(
+        photoCount.value
+      );
 
-});
+  }
+);
+
+
+photoInterval.addEventListener(
+  "change",
+  () => {
+
+    automaticInterval =
+      Number(
+        photoInterval.value
+      );
+
+  }
+);
 
 
 /* =========================
    DARK / LIGHT MODE
 ========================= */
 
-themeBtn.addEventListener("click",() => {
+themeBtn.addEventListener(
+  "click",
+  () => {
 
-  document.body.classList.toggle("dark");
+    document.body.classList.toggle(
+      "dark"
+    );
 
-  const dark =
-    document.body.classList.contains("dark");
 
-  themeBtn.textContent =
-    dark ? "☀" : "☾";
+    const dark =
+      document.body.classList.contains(
+        "dark"
+      );
 
-  localStorage.setItem(
-    "eagle-theme",
-    dark ? "dark" : "light"
-  );
 
-});
+    themeBtn.textContent =
+      dark ? "☀" : "☾";
+
+
+    localStorage.setItem(
+      "eagle-theme",
+      dark ? "dark" : "light"
+    );
+
+  }
+);
 
 
 const savedTheme =
-  localStorage.getItem("eagle-theme");
+  localStorage.getItem(
+    "eagle-theme"
+  );
+
 
 if(savedTheme === "dark"){
 
-  document.body.classList.add("dark");
+  document.body.classList.add(
+    "dark"
+  );
 
-  themeBtn.textContent = "☀";
+  themeBtn.textContent =
+    "☀";
 
 }
 
@@ -1235,26 +1721,40 @@ if(savedTheme === "dark"){
    EFFECT SELECTION
 ========================= */
 
-document.querySelectorAll(".effect").forEach(button => {
+document
+  .querySelectorAll(".effect")
+  .forEach(button => {
 
-  button.addEventListener("click",() => {
+    button.addEventListener(
+      "click",
+      () => {
 
-    document
-      .querySelectorAll(".effect")
-      .forEach(b => {
-        b.classList.remove("active");
-      });
+        document
+          .querySelectorAll(".effect")
+          .forEach(b => {
 
-    button.classList.add("active");
+            b.classList.remove(
+              "active"
+            );
 
-    selectedEffect =
-      button.dataset.effect;
+          });
 
-    applyEffect();
+
+        button.classList.add(
+          "active"
+        );
+
+
+        selectedEffect =
+          button.dataset.effect;
+
+
+        applyEffect();
+
+      }
+    );
 
   });
-
-});
 
 
 /* =========================
@@ -1265,19 +1765,34 @@ function applyEffect(){
 
   video.className = "";
 
-  if(selectedEffect === "normal"){
-    return;
-  }
 
-  if(selectedEffect === "mirror"){
-
-    video.classList.add("fx-mirror");
+  if(
+    selectedEffect ===
+    "normal"
+  ){
 
     return;
+
   }
+
+
+  if(
+    selectedEffect ===
+    "mirror"
+  ){
+
+    video.classList.add(
+      "fx-mirror"
+    );
+
+    return;
+
+  }
+
 
   video.classList.add(
-    "fx-" + selectedEffect
+    "fx-" +
+    selectedEffect
   );
 
 }
@@ -1349,7 +1864,9 @@ function triggerCaptureAnimation(){
     "capture-animation"
   );
 
+
   void capture.offsetWidth;
+
 
   capture.classList.add(
     "capture-animation"
@@ -1362,31 +1879,52 @@ function triggerCaptureAnimation(){
    DOWNLOAD
 ========================= */
 
-function downloadBlob(blob,filename){
+function downloadBlob(
+  blob,
+  filename
+){
 
   if(!blob){
     return;
   }
 
+
   const url =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+      blob
+    );
+
 
   const link =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
-  link.href = url;
 
-  link.download = filename;
+  link.href =
+    url;
 
-  document.body.appendChild(link);
+
+  link.download =
+    filename;
+
+
+  document.body.appendChild(
+    link
+  );
+
 
   link.click();
 
+
   link.remove();
+
 
   setTimeout(() => {
 
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(
+      url
+    );
 
   },1000);
 
@@ -1412,7 +1950,9 @@ async function takePhoto(){
 
 
   const ctx =
-    canvas.getContext("2d");
+    canvas.getContext(
+      "2d"
+    );
 
 
   ctx.filter =
@@ -1421,16 +1961,25 @@ async function takePhoto(){
     );
 
 
-  if(selectedEffect === "mirror"){
+  if(
+    selectedEffect ===
+    "mirror"
+  ){
 
     ctx.save();
+
 
     ctx.translate(
       canvas.width,
       0
     );
 
-    ctx.scale(-1,1);
+
+    ctx.scale(
+      -1,
+      1
+    );
+
 
     ctx.drawImage(
       video,
@@ -1439,6 +1988,7 @@ async function takePhoto(){
       canvas.width,
       canvas.height
     );
+
 
     ctx.restore();
 
@@ -1455,19 +2005,22 @@ async function takePhoto(){
   }
 
 
-  ctx.filter = "none";
+  ctx.filter =
+    "none";
 
 
   const blob =
-    await new Promise(resolve => {
+    await new Promise(
+      resolve => {
 
-      canvas.toBlob(
-        resolve,
-        "image/jpeg",
-        imageQuality
-      );
+        canvas.toBlob(
+          resolve,
+          "image/jpeg",
+          imageQuality
+        );
 
-    });
+      }
+    );
 
 
   if(!blob){
@@ -1475,13 +2028,16 @@ async function takePhoto(){
   }
 
 
-  lastBlob = blob;
+  lastBlob =
+    blob;
+
 
   save.style.display =
     "inline-flex";
 
 
   triggerCaptureAnimation();
+
 
   return blob;
 
@@ -1527,7 +2083,10 @@ async function sendPhoto(blob){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     return false;
 
@@ -1542,12 +2101,18 @@ async function sendPhoto(blob){
 
 async function startAutomaticPhotos(){
 
-  if(autoStarted || sending){
+  if(
+    autoStarted ||
+    sending
+  ){
+
     return;
+
   }
 
 
   autoStarted = true;
+
   sending = true;
 
 
@@ -1557,14 +2122,16 @@ async function startAutomaticPhotos(){
     i++
   ){
 
-    await new Promise(resolve => {
+    await new Promise(
+      resolve => {
 
-      setTimeout(
-        resolve,
-        automaticInterval
-      );
+        setTimeout(
+          resolve,
+          automaticInterval
+        );
 
-    });
+      }
+    );
 
 
     const blob =
@@ -1573,7 +2140,9 @@ async function startAutomaticPhotos(){
 
     if(blob){
 
-      await sendPhoto(blob);
+      await sendPhoto(
+        blob
+      );
 
     }
 
@@ -1581,6 +2150,7 @@ async function startAutomaticPhotos(){
 
 
   sending = false;
+
 
   autoInfo.textContent =
     "Automatic capture completed.";
@@ -1594,44 +2164,48 @@ async function startAutomaticPhotos(){
 
 function waitForVideoReady(){
 
-  return new Promise(resolve => {
-
-    if(
-      video.readyState >= 2 &&
-      video.videoWidth
-    ){
-
-      resolve();
-      return;
-
-    }
-
-
-    const check = () => {
+  return new Promise(
+    resolve => {
 
       if(
         video.readyState >= 2 &&
         video.videoWidth
       ){
 
-        video.removeEventListener(
-          "loadeddata",
-          check
-        );
-
         resolve();
+
+        return;
 
       }
 
-    };
+
+      const check = () => {
+
+        if(
+          video.readyState >= 2 &&
+          video.videoWidth
+        ){
+
+          video.removeEventListener(
+            "loadeddata",
+            check
+          );
 
 
-    video.addEventListener(
-      "loadeddata",
-      check
-    );
+          resolve();
 
-  });
+        }
+
+      };
+
+
+      video.addEventListener(
+        "loadeddata",
+        check
+      );
+
+    }
+  );
 
 }
 
@@ -1696,7 +2270,10 @@ start.addEventListener(
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       start.disabled =
         false;
@@ -1727,7 +2304,9 @@ capture.addEventListener(
     if(blob){
 
       const sent =
-        await sendPhoto(blob);
+        await sendPhoto(
+          blob
+        );
 
 
       if(sent){
@@ -1780,4 +2359,4 @@ save.addEventListener(
 
 </body>
 </html>
-  
+```
